@@ -6,3 +6,9 @@
  ::name
  (fn [db]
    (:name db)))
+
+
+(re-frame/reg-sub
+  ::layers
+  (fn [db]
+    (:layers db)))
