@@ -8,7 +8,10 @@
 
             [globe-cljs.layer.layer :as l]
 
-            [globe-cljs.layer.compass :as compass]))
+            [globe-cljs.layer.renderable :as rl]
+            [globe-cljs.layer.compass :as compass]
+            [globe-cljs.surface.polygon :as poly]))
+
 
 
 (def last-this (atom {}))
@@ -26,11 +29,13 @@
     ; remove old stuff
     (if removed
       (doall
+        (log/info "removing" removed)
         (map #(l/removeLayer this %) removed)))
 
     ; add new stuff
     (if added
       (doall
+        (log/info "adding" added)
         (map #(l/addLayer this [% (get new-children %)]) added)))))
 
 
@@ -113,5 +118,26 @@
                      "Compass" (compass/createLayer "Compass")])
   (rf/dispatch-sync [:globe-cljs.events/remove-layer
                      "Compass"])
+
+  ())
+
+
+; now we can try a more complicated layer: renderable with polygons!
+(comment
+  (do
+    (require '[globe-cljs.layer.renderable :as rl])
+    (require '[globe-cljs.surface.polygon :as poly])
+    (def children [(poly/createPolygon [0 0] {:color [255 0 0 1]})
+                   (poly/createPolygon [0 1] {:color [0 255 0 1]})
+                   (poly/createPolygon [1 0] {:color [0 0 255 1]})])
+    (def layer (rl/createLayer "polygons" children)))
+
+  (count (.-renderables layer))
+
+  (rf/dispatch-sync [:globe-cljs.events/add-layer
+                     "polygons" layer])
+  (rf/dispatch-sync [:globe-cljs.events/remove-layer
+                       "polygons"])
+  @re-frame.db/app-db
 
   ())
