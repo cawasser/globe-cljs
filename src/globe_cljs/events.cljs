@@ -58,6 +58,18 @@
 
 
 (re-frame/reg-event-db
+  ::add-layer
+  (fn-traced [db [_ layer-name layer]]
+    (update db :layers merge {layer-name layer})))
+
+
+(re-frame/reg-event-db
+  ::remove-layer
+  (fn-traced [db [_ layer-name]]
+    (update db :layers dissoc layer-name)))
+
+
+(re-frame/reg-event-db
   ::set-layers
   (fn-traced [db [_ layer-name layer]]
     (-> db

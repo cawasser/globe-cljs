@@ -215,17 +215,18 @@
 
   (count (.-renderables layer))
 
-  (rf/dispatch-sync [:globe-cljs.events/add-layer
+  (rf/dispatch-sync [::events/add-layer
                      "polygons" (rl/createLayer
                                   "polygons"
                                   [(poly/createPolygon [0 0] {:color [255 0 0 1]})
+                                   (poly/createPolygon [8 0] {:color [255 0 0 1]})
                                    (poly/createPolygon [0 1] {:color [0 255 0 1]})
                                    (poly/createPolygon [1 0] {:color [0 0 255 1]})])])
-  (rf/dispatch-sync [:globe-cljs.events/remove-layer "polygons"])
+  (rf/dispatch-sync [::events/remove-layer "polygons"])
   @re-frame.db/app-db
 
   ; now some other polygons
-  (rf/dispatch-sync [:globe-cljs.events/add-layer
+  (rf/dispatch-sync [::events/add-layer
                      "poly-2" (rl/createLayer "poly-2"
                                 [(poly/createPolygon [5 5]
                                    {:color [128 128 0 1]})])])
