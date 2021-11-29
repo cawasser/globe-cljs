@@ -3,6 +3,7 @@
     [reagent.core :as r]
     [re-frame.core :as re-frame]
     [globe-cljs.subs :as subs]
+    [globe-cljs.events :as events]
 
     [globe-cljs.globe :as g]
     [globe-cljs.reagent-context :as rc]
@@ -10,26 +11,28 @@
 
 
 (defn main-panel []
-  (let [name (re-frame/subscribe [::subs/name])
-        layers (re-frame/subscribe [::subs/layers])]
+  (let [base-layer (re-frame/subscribe [::subs/base-layer])
+        layers (re-frame/subscribe [::subs/layers])
+        timer (re-frame/subscribe [::subs/timer])]
     [:div
      [:div
       [:h1
-       "Watch for the compass!"]
-      [g/globe {:id "my-first-globe"
-                :style {:background-color :lightblue
-                        :width "50%" :height "100%"}}
-       @layers]]]))
-     ;[:div
-     ; [:h1 "Provider/Consumer using Context"]
-     ; [rc/root]]]))
+       "Watch the moving grid-cell!"]
+      [:button.button {:on-click #(re-frame/dispatch-sync [::events/toggle-timer])}
+       (if @timer "stop" "start")]]
+     [g/globe {:id "my-first-globe"
+               :style {:background-color :lightblue
+                       :width "50%" :height "100%"}}
+      (merge @base-layer @layers)]]))
 
 
 (comment
+  (def base-layer (re-frame/subscribe [::subs/base-layer]))
   (def layers (re-frame/subscribe [::subs/layers]))
 
   (g/globe {:id "my-globe"} @layers)
 
+  (merge @base-layer @layers)
 
   @re-frame.db/app-db
 

@@ -4,7 +4,8 @@
     [re-frame.core :as re-frame]
     [globe-cljs.events :as events]
     [globe-cljs.views :as views]
-    [globe-cljs.config :as config]))
+    [globe-cljs.config :as config]
+    [taoensso.timbre :as log]))
 
 
 (defn dev-setup []
@@ -20,6 +21,7 @@
 
 
 (defn init []
-  (re-frame/dispatch-sync [:globe-cljs.events/initialize-db])
+  (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)
-  (mount-root))
+  (mount-root)
+  (re-frame/dispatch-sync [::events/start-timer]))

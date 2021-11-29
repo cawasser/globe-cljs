@@ -1,6 +1,9 @@
 (ns globe-cljs.layer.renderable
   (:require ["worldwindjs" :as WorldWind]
-            [taoensso.timbre :as log]))
+            [taoensso.timbre :as log]
+            [re-frame.core :as re-frame]
+            [globe-cljs.events :as events]
+            [globe-cljs.subs :as subs]))
 
 
 (defn createLayer [layer-name children]
@@ -13,7 +16,6 @@
              (.addRenderable layer child))
         children))
     layer))
-
 
 
 ; work out the logic for adding children

@@ -5,9 +5,9 @@
             [re-frame.core :as rf]
             [taoensso.timbre :as log]
             [clojure.set :as set]
+            [globe-cljs.events :as events]
 
             [globe-cljs.layer.layer :as l]
-
             [globe-cljs.layer.renderable :as rl]
             [globe-cljs.layer.compass :as compass]
             [globe-cljs.surface.polygon :as poly]))
@@ -114,10 +114,9 @@
 ; try updating the app-db and seeing if the globe updates
 (comment
   (require '[globe-cljs.layer.compass :as compass])
-  (rf/dispatch-sync [:globe-cljs.events/add-layer
+  (rf/dispatch-sync [::events/add-layer
                      "Compass" (compass/createLayer "Compass")])
-  (rf/dispatch-sync [:globe-cljs.events/remove-layer
-                     "Compass"])
+  (rf/dispatch-sync [::events/remove-layer "Compass"])
 
   ())
 

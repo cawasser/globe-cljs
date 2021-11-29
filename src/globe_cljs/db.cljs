@@ -3,4 +3,6 @@
 
 (def default-db
   {:name   "re-frame"
-   :layers {"Blue Marble" (bm/createLayer "Blue Marble")}})
+   :current-cell [0 0]
+   :base-layer {"Blue Marble" (bm/createLayer "Blue Marble")}
+   :layers {}})

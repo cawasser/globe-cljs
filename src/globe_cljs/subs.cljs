@@ -9,6 +9,18 @@
 
 
 (re-frame/reg-sub
-  ::layers
+  ::base-layer
   (fn [db]
-    (:layers db)))
+    (:base-layer db)))
+
+
+(re-frame/reg-sub
+  ::current-cell
+  (fn [db]
+    (:current-cell db)))
+
+
+(re-frame/reg-sub
+  ::timer
+  (fn [db]
+    (:timer db)))
