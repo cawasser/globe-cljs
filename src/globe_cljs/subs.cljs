@@ -15,6 +15,12 @@
 
 
 (re-frame/reg-sub
+  ::projection
+  (fn [db]
+    (:projection db)))
+
+
+(re-frame/reg-sub
   ::current-cell
   (fn [db]
     (:current-cell db)))

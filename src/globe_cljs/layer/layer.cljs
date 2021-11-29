@@ -21,7 +21,7 @@
 
 
 (defn addLayer [this idx [_ layer]]
-  (log/info "addLayer" (.-displayName layer))
+  ;(log/info "addLayer" (.-displayName layer))
   (reset! last-this this)
 
   ; TODO: need to fix "nextIndex" for layers
@@ -32,7 +32,7 @@
 
 
 (defn removeLayer [this layer-name]
-  (log/info "removeLayer" layer-name)
+  ;(log/info "removeLayer" layer-name)
   (reset! last-this this)
   (if-let [layer (getLayer this layer-name)]
     (do

@@ -39,6 +39,13 @@
 
 
 (re-frame/reg-event-db
+  ::set-projection
+  (fn-traced [db [_ new-projection]]
+    (log/info "set-projection" new-projection)
+    (assoc db :projection new-projection)))
+
+
+(re-frame/reg-event-db
   ::add-base-layer
   (fn-traced [db [_ layer-name layer]]
     (update db :base-layers merge {layer-name layer})))
