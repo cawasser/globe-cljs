@@ -102,6 +102,8 @@
 (defn- component-did-mount [dom-node state this]
   (log/info "component-did-mount" @state)
 
+  (reset! last-this this)
+
   (let [node (rdom/dom-node this)]
     ;; This will trigger a re-render of the component.
     (reset! dom-node node))
@@ -159,17 +161,21 @@
     (reagent/create-class
       {:display-name         (:id props)
 
-       :constructor          (fn [this props]
-                               ;(log/info "constructor" (reagent/props this) (reagent/children this))
+       :constructor          (fn [this props children]
+                               (log/info "constructor" props
+                                 "////" (reagent/props this)
+                                 "////" (reagent/children this))
                                (swap! state assoc
                                  :nextIndex 0
                                  :wwd ()
-                                 :canvasId (or (.-canvasId props) (str "canvas_" (js/Date.now)))
-                                 :id (or (.-canvasId props) (str "canvas_" (js/Date.now)))
+                                 :canvasId (or (:id (reagent/props this)) (str "canvas_" (js/Date.now)))
+                                 :id (or (:id (reagent/props this)) (str "canvas_" (js/Date.now)))
                                  :isValid false
                                  :isDropArmed false
-                                 :projection (or (.-projection props) (nth projections 0))
-                                 :layers (reagent/children this)))
+                                 :projection (or (:projection (reagent/props this)) (nth projections 0))
+                                 :layers (reagent/children this))
+
+                               (rf/dispatch-sync [::events/init-widget (:id @state)]))
 
        :component-did-mount  (partial component-did-mount dom-node state)
 
@@ -188,17 +194,17 @@
 
 ; try updating the app-db and seeing if the globe updates
 (comment
-  (rf/dispatch-sync [::events/add-base-layer
+  (rf/dispatch-sync [::events/add-base-layer "my-first-globe"
                      "Compass" (compass/createLayer "Compass")])
-  (rf/dispatch-sync [::events/remove-base-layer "Compass"])
+  (rf/dispatch-sync [::events/remove-base-layer "my-first-globe" "Compass"])
 
-  (rf/dispatch-sync [::events/add-base-layer
+  (rf/dispatch-sync [::events/add-base-layer "my-first-globe"
                      "Tesselation" (tess/createLayer "Tesselation")])
-  (rf/dispatch-sync [::events/remove-base-layer "Tesselation"])
+  (rf/dispatch-sync [::events/remove-base-layer "my-first-globe" "Tesselation"])
 
-  (rf/dispatch-sync [::events/add-base-layer
+  (rf/dispatch-sync [::events/add-base-layer "my-first-globe"
                      "Blue Marble" (bm/createLayer "Blue Marble")])
-  (rf/dispatch-sync [::events/remove-base-layer "Blue Marble"])
+  (rf/dispatch-sync [::events/remove-base-layer "my-first-globe" "Blue Marble"])
 
   ())
 
@@ -215,14 +221,14 @@
 
   (count (.-renderables layer))
 
-  (rf/dispatch-sync [::events/add-layer
+  (rf/dispatch-sync [::events/add-layer "my-first-globe"
                      "polygons" (rl/createLayer
                                   "polygons"
                                   [(poly/createPolygon [0 0] {:color [255 0 0 1]})
                                    (poly/createPolygon [8 0] {:color [255 0 0 1]})
                                    (poly/createPolygon [0 1] {:color [0 255 0 1]})
                                    (poly/createPolygon [1 0] {:color [0 0 255 1]})])])
-  (rf/dispatch-sync [::events/remove-layer "polygons"])
+  (rf/dispatch-sync [::events/remove-layer "my-first-globe" "polygons"])
   @re-frame.db/app-db
 
   ; now some other polygons
@@ -234,6 +240,18 @@
 
   ())
 
+
+
+; can we get the local data from the [:widgets id] subtree in app-db?
+(comment
+  (def dom-node (atom (rdom/dom-node @last-this)))
+
+  (def canvasId (.-id @dom-node))
+  (def props    (reagent/props @last-this))
+
+  (reagent/children @last-this)
+
+  ())
 
 
 ; change projections

@@ -11,39 +11,48 @@
     [globe-cljs.renderableLayer :as l]))
 
 
-(defn main-panel []
-  (let [base-layer (re-frame/subscribe [::subs/base-layers])
-        layers     (re-frame/subscribe [::subs/layers])
-        projection (re-frame/subscribe [::subs/projection])
-        timer      (re-frame/subscribe [::subs/timer])]
+(defn- globe [globe-id]
+  (let [base-layer (re-frame/subscribe [::subs/base-layers globe-id])
+        layers     (re-frame/subscribe [::subs/layers globe-id])
+        projection (re-frame/subscribe [::subs/projection globe-id])
+        timer      (re-frame/subscribe [::subs/timer globe-id])]
     [:div
      [:div
-      [:h1
-       "Watch the moving grid-cell!"]
+      [:h1 globe-id]
 
-      [:button.button {:on-click #(re-frame/dispatch-sync [::events/toggle-timer])}
+      [:button.button {:on-click #(re-frame/dispatch-sync [::events/toggle-timer globe-id])}
        (if @timer "stop" "start")]
 
       [:div
        [:label {:for "projections"} "Projection:"]
-       [:select#projections {:name "projections"
-                             :value @projection
-                             :on-change #(re-frame/dispatch [::events/set-projection (-> % .-target .-value)])}
+       [:select#projections {:name      "projections"
+                             :value     @projection
+                             :on-change #(re-frame/dispatch
+                                           [::events/set-projection globe-id (-> % .-target .-value)])}
         (doall
           (map (fn [p]
                  ^{:key p} [:option {:value p} p])
             g/projections))]]]
-
-     [g/globe {:id         "my-first-globe"
-               :projection @projection
+     [g/globe {:id         globe-id
+               :projection (or @projection "3D")
                :style      {:background-color :lightblue
                             :width            "50%" :height "100%"}}
       (merge @base-layer @layers)]]))
 
 
+(defn main-panel []
+  [:div
+   [globe "globe-1"]
+   [globe "globe-2"]])
+
+
+
+
+
 (comment
-  (def base-layer (re-frame/subscribe [::subs/base-layer]))
-  (def layers (re-frame/subscribe [::subs/layers]))
+  (def globe-id "my-first-globe")
+  (def base-layer (re-frame/subscribe [::subs/base-layer globe-id]))
+  (def layers (re-frame/subscribe [::subs/layers globe-id]))
 
   (g/globe {:id "my-globe"} @layers)
 

@@ -29,10 +29,12 @@
   :<- [::subs/current-cell]
 
   (fn [cell _]
-    (merge {(str cell)
-            (rl/createLayer (str cell)
-              [(createPolygon cell {:color [128 128 0 0.3]})])}
-      (:layers @re-frame.db/app-db))))
+    (log/info "layers subscription")
+    (if cell
+      (merge {(str cell)
+              (rl/createLayer (str cell)
+                [(createPolygon cell {:color [128 128 0 0.3]})])}
+        (:layers @re-frame.db/app-db)))))
 
 
 

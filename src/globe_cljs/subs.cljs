@@ -10,23 +10,23 @@
 
 (re-frame/reg-sub
   ::base-layers
-  (fn [db]
-    (:base-layers db)))
+  (fn [db [_ id]]
+    (get-in db [:widgets id :base-layers])))
 
 
 (re-frame/reg-sub
   ::projection
-  (fn [db]
-    (:projection db)))
+  (fn [db [_ id]]
+    (get-in db [:widgets id :projection])))
 
 
 (re-frame/reg-sub
   ::current-cell
-  (fn [db]
-    (:current-cell db)))
+  (fn [db [_ id]]
+    (get-in db [:widgets id :current-cell])))
 
 
 (re-frame/reg-sub
   ::timer
-  (fn [db]
-    (:timer db)))
+  (fn [db [_ id]]
+    (get-in db [:widgets id :timer])))
