@@ -31,7 +31,7 @@
   (fn [cell _]
     {(str cell)
      (rl/createLayer (str cell)
-       [(createPolygon cell {:color [255 0 0 1]})])}))
+       [(createPolygon cell {:color [128 128 0 0.3]})])}))
 
 
 

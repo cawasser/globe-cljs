@@ -9,9 +9,9 @@
 
 
 (re-frame/reg-sub
-  ::base-layer
+  ::base-layers
   (fn [db]
-    (:base-layer db)))
+    (:base-layers db)))
 
 
 (re-frame/reg-sub

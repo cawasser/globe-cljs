@@ -9,9 +9,12 @@
 
             [globe-cljs.layer.layer :as l]
             [globe-cljs.layer.renderable :as rl]
-            [globe-cljs.layer.compass :as compass]
-            [globe-cljs.surface.polygon :as poly]))
 
+            [globe-cljs.layer.blue-marble :as bm]
+            [globe-cljs.layer.compass :as compass]
+            [globe-cljs.layer.controls :as controls]
+            [globe-cljs.layer.tesselation :as tess]
+            [globe-cljs.surface.polygon :as poly]))
 
 
 (def last-this (atom {}))
@@ -36,7 +39,10 @@
     (if added
       (doall
         (log/info "adding" added)
-        (map #(l/addLayer this [% (get new-children %)]) added)))))
+        (for [[idx child] (map-indexed vector added)]
+          (do
+            (log/info "adding" idx child)
+            (l/addLayer this idx [child (get new-children child)])))))))
 
 
 (defn- component-did-mount [dom-node state this]
@@ -60,9 +66,13 @@
       (set! (.-changeProjection this) (.-projection props)))
 
     (doall
-      (log/info "mapping layers" (first (reagent/children this)))
-      (map #(l/addLayer this %)
-        (first (reagent/children this))))))
+      (for [[idx child] (map-indexed vector (first (reagent/children this)))]
+        (do
+          (log/info "adding layer" idx child)
+          (l/addLayer this idx child))))
+
+    ; add the controls layer
+    (l/addLayer this -1 ["Controls" (controls/createLayer this "Controls")])))
 
 
 (defn- component-did-update [dom-node state this old-argv]
@@ -92,7 +102,7 @@
                         :nextIndex 0
                         :wwd ()
                         :canvasId (or (.-canvasId props) (str "canvas_" (js/Date.now)))
-                        :id (.-canvasId props)
+                        :id (or (.-canvasId props) (str "canvas_" (js/Date.now)))
                         :isValid false
                         :isDropArmed false
                         :layers (reagent/children this)))
@@ -107,16 +117,24 @@
          (let [cursor (if (:isDropArmed @state) "crosshair" "default")
                backgroundColor (or (:backgroundColor @state) DEFAULT_BACKGROUND_COLOR)]
 
-           [:canvas (merge props {:id (:canvasId @state)})
+           [:canvas (merge props {:id (:canvasId @state)
+                                  :nextIndex (:nextIndex @state)})
             "Your browser does not support HTML5 Canvas."]))})))
 
 
 ; try updating the app-db and seeing if the globe updates
 (comment
-  (require '[globe-cljs.layer.compass :as compass])
-  (rf/dispatch-sync [::events/add-layer
+  (rf/dispatch-sync [::events/add-base-layer
                      "Compass" (compass/createLayer "Compass")])
-  (rf/dispatch-sync [::events/remove-layer "Compass"])
+  (rf/dispatch-sync [::events/remove-base-layer "Compass"])
+
+  (rf/dispatch-sync [::events/add-base-layer
+                     "Tesselation" (tess/createLayer "Tesselation")])
+  (rf/dispatch-sync [::events/remove-base-layer "Tesselation"])
+
+  (rf/dispatch-sync [::events/add-base-layer
+                     "Blue Marble" (bm/createLayer "Blue Marble")])
+  (rf/dispatch-sync [::events/remove-base-layer "Blue Marble"])
 
   ())
 

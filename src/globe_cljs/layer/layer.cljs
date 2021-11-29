@@ -20,12 +20,12 @@
     (first layer)))
 
 
-(defn addLayer [this [_ layer]]
+(defn addLayer [this idx [_ layer]]
   (log/info "addLayer" (.-displayName layer))
   (reset! last-this this)
 
   ; TODO: need to fix "nextIndex" for layers
-  (.insertLayer (.-wwd this) 0 layer)
+  (.insertLayer (.-wwd this) idx layer)
   (.redraw (.-wwd this))
 
   layer)
@@ -49,6 +49,8 @@
   (def layer-name "Blue Marble")
 
   @last-this
+
+  (.. @last-this -props -nextIndex)
 
   (getLayer @last-this layer-name)
 

@@ -11,7 +11,7 @@
 
 
 (defn main-panel []
-  (let [base-layer (re-frame/subscribe [::subs/base-layer])
+  (let [base-layer (re-frame/subscribe [::subs/base-layers])
         layers (re-frame/subscribe [::subs/layers])
         timer (re-frame/subscribe [::subs/timer])]
     [:div

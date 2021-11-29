@@ -39,9 +39,15 @@
 
 
 (re-frame/reg-event-db
-  ::add-layer
+  ::add-base-layer
   (fn-traced [db [_ layer-name layer]]
-    (update db :layers merge {layer-name layer})))
+    (update db :base-layers merge {layer-name layer})))
+
+
+(re-frame/reg-event-db
+  ::remove-base-layer
+  (fn-traced [db [_ layer-name]]
+    (update db :base-layers dissoc layer-name)))
 
 
 (re-frame/reg-event-db
@@ -63,7 +69,6 @@
               new-c 0]
           (assoc db :current-cell [new-r new-c]))
         (assoc db :current-cell [current-r next-c])))))
-
 
 
 (comment
