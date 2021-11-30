@@ -6,14 +6,14 @@
             [globe-cljs.subs :as subs]
 
             [globe-cljs.cell.util :as cell]
+            [globe-cljs.worldwind.location :as location]
             [globe-cljs.layer.renderable :as rl]))
 
 
-(defn createPolygon [cell props]
-  (log/info "createPolygon" cell props)
+(defn createPolygon [locations props]
+  (log/info "createPolygon" locations props)
 
   (let [attributes (WorldWind/ShapeAttributes.)
-        locations  (cell/boundary-locations cell)
         polygon    (WorldWind/SurfacePolygon. locations attributes)
         [r g b a] (:color props)]
 
@@ -31,10 +31,15 @@
 
   (fn [cell [_ id]]
     (if cell
-      (merge {(str cell)
-              (rl/createLayer (str cell)
-                [(createPolygon cell {:color [128 128 0 0.3]})])}
-        (:layers @re-frame.db/app-db)))))
+      (let [boundaries (cell/cell-boundaries cell)
+            locations (->> boundaries
+                        (map (fn [location]
+                               (location/createLocation location)))
+                        (into-array))]
+        (merge {(str cell)
+                (rl/createLayer (str cell)
+                  [(createPolygon locations {:color [128 128 0 0.3]})])}
+          (:layers @re-frame.db/app-db))))))
 
 
 
