@@ -1,4 +1,4 @@
-(ns globe-cljs.layer.tesselation
+(ns globe-cljs.worldwind.layer.tesselation
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]))
 

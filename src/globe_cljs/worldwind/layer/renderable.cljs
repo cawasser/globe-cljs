@@ -1,4 +1,4 @@
-(ns globe-cljs.layer.renderable
+(ns globe-cljs.worldwind.layer.renderable
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]
             [re-frame.core :as re-frame]

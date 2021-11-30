@@ -6,12 +6,13 @@
 
             [globe-cljs.cell.util :as cell]
             [globe-cljs.worldwind.defaults :as default]
+            [globe-cljs.worldwind.color :as color]
             [globe-cljs.worldwind.location :as location]
             [globe-cljs.worldwind.position :as position]
             [globe-cljs.worldwind.geographic-text :as geo-text]
             [globe-cljs.worldwind.text-attributes :as text-attr]
-            [globe-cljs.layer.renderable :as rl]
-            [globe-cljs.surface.polygon :as poly]))
+            [globe-cljs.worldwind.layer.renderable :as rl]
+            [globe-cljs.worldwind.surface.polygon :as poly]))
 
 
 (defn- make-polygon [cell]
@@ -24,7 +25,7 @@
         center (position/position (get cell/cell-centers cell))]
     {cell-text
      (rl/renderable-layer cell-text
-       [(poly/polygon locations {:color [128 128 0 0.3]})
+       [(poly/polygon locations {:color (color/yellow 0.3)})
         (geo-text/geographic-text center cell-text
           (text-attr/text-attributes))])}))
 

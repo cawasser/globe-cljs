@@ -6,16 +6,9 @@
             [taoensso.timbre :as log]
             [clojure.set :as set]
             [globe-cljs.events :as events]
-            [globe-cljs.cell.layer-support :as layer-support]
 
-            [globe-cljs.layer.layer :as l]
-            [globe-cljs.layer.renderable :as rl]
-
-            [globe-cljs.layer.blue-marble :as bm]
-            [globe-cljs.layer.compass :as compass]
-            [globe-cljs.layer.controls :as controls]
-            [globe-cljs.layer.tesselation :as tess]
-            [globe-cljs.surface.polygon :as poly]))
+            [globe-cljs.worldwind.layer.layer :as l]
+            [globe-cljs.worldwind.layer.controls :as controls]))
 
 
 (def last-this (atom {}))
@@ -196,15 +189,15 @@
 ; try updating the app-db and seeing if the globe updates
 (comment
   (rf/dispatch-sync [::events/add-base-layer "my-first-globe"
-                     "Compass" (compass/createLayer "Compass")])
+                     "Compass" (globe-cljs.worldwind.layer.compass/compass "Compass")])
   (rf/dispatch-sync [::events/remove-base-layer "my-first-globe" "Compass"])
 
   (rf/dispatch-sync [::events/add-base-layer "my-first-globe"
-                     "Tesselation" (tess/createLayer "Tesselation")])
+                     "Tesselation" (globe-cljs.worldwind.layer.tesselation/tesselation "Tesselation")])
   (rf/dispatch-sync [::events/remove-base-layer "my-first-globe" "Tesselation"])
 
   (rf/dispatch-sync [::events/add-base-layer "my-first-globe"
-                     "Blue Marble" (bm/createLayer "Blue Marble")])
+                     "Blue Marble" (globe-cljs.worldwind.layer.blue-marble/blue-marble "Blue Marble")])
   (rf/dispatch-sync [::events/remove-base-layer "my-first-globe" "Blue Marble"])
 
   ())

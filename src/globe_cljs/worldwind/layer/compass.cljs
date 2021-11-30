@@ -1,4 +1,4 @@
-(ns globe-cljs.layer.compass
+(ns globe-cljs.worldwind.layer.compass
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]))
 

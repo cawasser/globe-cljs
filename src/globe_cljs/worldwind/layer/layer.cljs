@@ -1,4 +1,4 @@
-(ns globe-cljs.layer.layer
+(ns globe-cljs.worldwind.layer.layer
   (:require ["worldwindjs" :as WorldWind]
             [reagent.core :as reagent]
             [reagent.dom :as rdom]

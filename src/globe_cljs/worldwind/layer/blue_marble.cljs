@@ -1,4 +1,4 @@
-(ns globe-cljs.layer.blue-marble
+(ns globe-cljs.worldwind.layer.blue-marble
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]))
 
