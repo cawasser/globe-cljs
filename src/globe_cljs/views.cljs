@@ -33,6 +33,7 @@
           (map (fn [p]
                  ^{:key p} [:option {:value p} p])
             g/projections))]]]
+
      [g/globe {:id         globe-id
                :projection (or @projection "3D")
                :style      {:background-color :lightblue
@@ -50,8 +51,8 @@
 
 
 (comment
-  (def globe-id "my-first-globe")
-  (def base-layer (re-frame/subscribe [::subs/base-layer globe-id]))
+  (def globe-id "globe-1")
+  (def base-layer (re-frame/subscribe [::subs/base-layers globe-id]))
   (def layers (re-frame/subscribe [::subs/layers globe-id]))
 
   (g/globe {:id "my-globe"} @layers)

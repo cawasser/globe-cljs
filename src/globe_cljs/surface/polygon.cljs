@@ -26,10 +26,10 @@
 (re-frame/reg-sub
   ::subs/layers
 
-  :<- [::subs/current-cell]
+  (fn [[_ id] _]
+    (re-frame/subscribe [::subs/current-cell id]))
 
-  (fn [cell _]
-    (log/info "layers subscription")
+  (fn [cell [_ id]]
     (if cell
       (merge {(str cell)
               (rl/createLayer (str cell)

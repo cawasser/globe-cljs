@@ -24,7 +24,6 @@
   ;(log/info "addLayer" (.-displayName layer))
   (reset! last-this this)
 
-  ; TODO: need to fix "nextIndex" for layers
   (.insertLayer (.-wwd this) idx layer)
   (.redraw (.-wwd this))
 

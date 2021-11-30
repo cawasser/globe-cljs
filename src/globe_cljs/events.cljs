@@ -35,7 +35,7 @@
         (assoc-in db [:widgets id :timer] nil))
       (do
         (log/info "starting" id)
-        (assoc-in db [:widgets id :timer] (js/setInterval #(re-frame/dispatch-sync [::move-cell])
+        (assoc-in db [:widgets id :timer] (js/setInterval #(re-frame/dispatch-sync [::move-cell id])
                                             (seconds 0.5)))))))
 
 
