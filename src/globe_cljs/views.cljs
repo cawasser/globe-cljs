@@ -11,6 +11,16 @@
     [globe-cljs.renderableLayer :as l]))
 
 
+(defn- time-slider [id current-time-t]
+  [:div.slidecontainer
+   [:input#myRange.slider
+    {:style     {:width 400}
+     :type      "range" :min "0" :max "100" :value @current-time-t
+     :on-change #(do
+                   (log/info "time-slider" (js/parseInt (-> % .-target .-value)))
+                   (re-frame/dispatch-sync [::events/update-timer id (js/parseInt (-> % .-target .-value))]))}]])
+
+
 (defn- globe [globe-id]
   (let [base-layer (re-frame/subscribe [::subs/base-layers globe-id])
         layers     (re-frame/subscribe [::subs/layers globe-id])
@@ -20,8 +30,7 @@
      [:div
       [:h1 globe-id]
 
-      [:button.button {:on-click #(re-frame/dispatch-sync [::events/toggle-timer globe-id])}
-       (if @timer "stop" "start")]
+      [time-slider globe-id timer]
 
       [:div
        [:label {:for "projections"} "Projection:"]

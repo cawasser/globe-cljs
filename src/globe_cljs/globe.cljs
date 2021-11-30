@@ -6,6 +6,7 @@
             [taoensso.timbre :as log]
             [clojure.set :as set]
             [globe-cljs.events :as events]
+            [globe-cljs.cell.layer-support :as layer-support]
 
             [globe-cljs.layer.layer :as l]
             [globe-cljs.layer.renderable :as rl]

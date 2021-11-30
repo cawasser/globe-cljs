@@ -5,12 +5,13 @@
 
 (def globe-config
   {:current-cell [0 0]
-   :projection "3D"
+   :projection   "3D"
    :base-layers  {"Blue Marble" (blue-marble/blue-marble "Blue Marble")
                   "Compass"     (compass/compass "Compass")}
-   :layers       {}})
+   :layers       {}
+   :timer        0})
 
 
 (def default-db
-  {:name         "re-frame"})
+  {:name "re-frame"})
 

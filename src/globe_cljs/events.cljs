@@ -24,19 +24,27 @@
   (* t 1000))
 
 
+
 (re-frame/reg-event-db
-  ::toggle-timer
-  (fn-traced [db [_ id]]
-    (log/info "toggle-timer" id)
-    (if-let [timer (get-in db [:widgets id :timer])]
-      (do
-        (log/info "stopping" id)
-        (js/clearInterval timer)
-        (assoc-in db [:widgets id :timer] nil))
-      (do
-        (log/info "starting" id)
-        (assoc-in db [:widgets id :timer] (js/setInterval #(re-frame/dispatch-sync [::move-cell id])
-                                            (seconds 0.5)))))))
+  ::update-timer
+  (fn-traced [db [_ id new-time]]
+    (log/info "update-timer" id new-time)
+    (assoc-in db [:widgets id :timer] new-time)))
+
+
+;(re-frame/reg-event-db
+;  ::toggle-timer
+;  (fn-traced [db [_ id]]
+;    (log/info "toggle-timer" id)
+;    (if-let [timer (get-in db [:widgets id :timer])]
+;      (do
+;        (log/info "stopping" id)
+;        (js/clearInterval timer)
+;        (assoc-in db [:widgets id :timer] nil))
+;      (do
+;        (log/info "starting" id)
+;        (assoc-in db [:widgets id :timer] (js/setInterval #(re-frame/dispatch-sync [::move-cell id])
+;                                            (seconds 0.5)))))))
 
 
 (re-frame/reg-event-db
@@ -84,25 +92,16 @@
       (assoc-in [:widgets id :layers] {layer-name layer}))))
 
 
-(re-frame/reg-event-db
-  ::move-cell
-  (fn-traced [db [_ id]]
-    (log/info "::move-cell from" id (get-in db [:widgets id :current-cell]))
-    (let [[current-r current-c] (get-in db [:widgets id :current-cell])
-          next-c (inc current-c)]
-      (if (> next-c 9)
-        (let [new-r (mod (inc current-r) 10)
-              new-c 0]
-          (assoc-in db [:widgets id :current-cell] [new-r new-c]))
-        (assoc-in db [:widgets id :current-cell] [current-r next-c])))))
+;(re-frame/reg-event-db
+;  ::move-cell
+;  (fn-traced [db [_ id]]
+;    (log/info "::move-cell from" id (get-in db [:widgets id ::globe-cljs.subs/current-cells]))
+;    (let [[current-r current-c] (get-in db [:widgets id ::globe-cljs.subs/current-cells])
+;          next-c (inc current-c)]
+;      (if (> next-c 9)
+;        (let [new-r (mod (inc current-r) 10)
+;              new-c 0]
+;          (assoc-in db [:widgets id ::globe-cljs.subs/current-cells] [new-r new-c]))
+;        (assoc-in db [:widgets id ::globe-cljs.subs/current-cells] [current-r next-c])))))
 
 
-(comment
-  @re-frame.db/app-db
-
-  (re-frame/dispatch-sync [::move-cell "my-first-globe"])
-
-  (def test-t {:timer nil})
-  (if-let [timer (:timer test-t)]
-    true false)
-  ())
