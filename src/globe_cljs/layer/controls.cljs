@@ -5,9 +5,8 @@
 
 (def last-this (atom nil))
 
-(defn createLayer [this layer-name]
-  (log/info "createLayer" layer-name)
 
+(defn controls [this layer-name]
   (reset! last-this this)
 
   (let [layer (WorldWind/ViewControlsLayer. (.-wwd this))]

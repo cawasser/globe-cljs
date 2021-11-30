@@ -3,7 +3,7 @@
             [taoensso.timbre :as log]))
 
 
-(defn createLayer [layer-name]
+(defn tesselation [layer-name]
   (log/info "createLayer" layer-name)
 
   (let [layer (WorldWind/ShowTessellationLayer.)]

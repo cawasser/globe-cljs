@@ -3,9 +3,7 @@
             [taoensso.timbre :as log]))
 
 
-(defn createLayer [layer-name]
-  (log/info "createLayer" layer-name)
-
+(defn compass [layer-name]
   (let [layer (WorldWind/CompassLayer.)]
     (set! (.-displayName layer) layer-name)
     layer))

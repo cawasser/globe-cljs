@@ -3,9 +3,7 @@
             [taoensso.timbre :as log]))
 
 
-(defn createLayer [layer-name]
-  (log/info "createLayer" layer-name)
-
+(defn blue-marble [layer-name]
   (let [layer (WorldWind/BMNGLayer.)]
     (set! (.-displayName layer) layer-name)
     layer))

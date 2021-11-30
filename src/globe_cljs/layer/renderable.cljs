@@ -6,9 +6,7 @@
             [globe-cljs.subs :as subs]))
 
 
-(defn createLayer [layer-name children]
-  (log/info "createLayer" layer-name)
-
+(defn renderable-layer [layer-name children]
   (let [layer (WorldWind/RenderableLayer.)]
     (set! (.-displayName layer) layer-name)
     (doall

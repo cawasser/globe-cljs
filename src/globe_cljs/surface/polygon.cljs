@@ -11,8 +11,8 @@
             [globe-cljs.layer.renderable :as rl]))
 
 
-(defn createPolygon [locations props]
-  (log/info "createPolygon" locations props)
+(defn polygon [locations props]
+  (log/info "polygon" locations props)
 
   (let [[r g b a] (:color props)
         attributes (shape-attributes/shape-attributes
@@ -36,16 +36,16 @@
                                 (location/location location)))
                          (into-array))]
         (merge {(str cell)
-                (rl/createLayer (str cell)
-                  [(createPolygon locations {:color [128 128 0 0.3]})])}
+                (rl/renderable-layer (str cell)
+                  [(polygon locations {:color [128 128 0 0.3]})])}
           (:layers @re-frame.db/app-db))))))
 
 
 
 (comment
-  (def children [(createPolygon [0 0] {:color [255 0 0 1]})
-                 (createPolygon [0 1] {:color [0 255 0 1]})
-                 (createPolygon [1 0] {:color [0 0 255 1]})])
+  (def children [(polygon [0 0] {:color [255 0 0 1]})
+                 (polygon [0 1] {:color [0 255 0 1]})
+                 (polygon [1 0] {:color [0 0 255 1]})])
 
   @(re-frame/subscribe [::subs/current-cell])
   @(re-frame/subscribe [::subs/current-cell])
@@ -56,7 +56,7 @@
 
   (merge {(str cell)
           (rl/createLayer (str cell)
-            [(createPolygon cell {:color [128 128 0 0.3]})])}
+            [(polygon cell {:color [128 128 0 0.3]})])}
     (:layers @re-frame.db/app-db))
 
   ())

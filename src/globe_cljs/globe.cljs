@@ -130,7 +130,7 @@
           (l/addLayer this idx child))))
 
     ; add the controls layer
-    (l/addLayer this -1 ["Controls" (controls/createLayer this "Controls")])))
+    (l/addLayer this -1 ["Controls" (controls/controls this "Controls")])))
 
 
 (defn- component-did-update [dom-node state this old-argv]
@@ -214,9 +214,9 @@
   (do
     (require '[globe-cljs.layer.renderable :as rl])
     (require '[globe-cljs.surface.polygon :as poly])
-    (def children [(poly/createPolygon [0 0] {:color [255 0 0 1]})
-                   (poly/createPolygon [0 1] {:color [0 255 0 1]})
-                   (poly/createPolygon [1 0] {:color [0 0 255 1]})])
+    (def children [(poly/polygon [0 0] {:color [255 0 0 1]})
+                   (poly/polygon [0 1] {:color [0 255 0 1]})
+                   (poly/polygon [1 0] {:color [0 0 255 1]})])
     (def layer (rl/createLayer "polygons" children)))
 
   (count (.-renderables layer))
@@ -224,17 +224,17 @@
   (rf/dispatch-sync [::events/add-layer "my-first-globe"
                      "polygons" (rl/createLayer
                                   "polygons"
-                                  [(poly/createPolygon [0 0] {:color [255 0 0 1]})
-                                   (poly/createPolygon [8 0] {:color [255 0 0 1]})
-                                   (poly/createPolygon [0 1] {:color [0 255 0 1]})
-                                   (poly/createPolygon [1 0] {:color [0 0 255 1]})])])
+                                  [(poly/polygon [0 0] {:color [255 0 0 1]})
+                                   (poly/polygon [8 0] {:color [255 0 0 1]})
+                                   (poly/polygon [0 1] {:color [0 255 0 1]})
+                                   (poly/polygon [1 0] {:color [0 0 255 1]})])])
   (rf/dispatch-sync [::events/remove-layer "my-first-globe" "polygons"])
   @re-frame.db/app-db
 
   ; now some other polygons
   (rf/dispatch-sync [::events/add-layer
                      "poly-2" (rl/createLayer "poly-2"
-                                [(poly/createPolygon [5 5]
+                                [(poly/polygon [5 5]
                                    {:color [128 128 0 1]})])])
   (rf/dispatch-sync [:globe-cljs.events/remove-layer "poly-2"])
 
