@@ -3,5 +3,5 @@
             [taoensso.timbre :as log]))
 
 
-(defn createLocation [[lat lon]]
+(defn location [[lat lon]]
   (WorldWind/Location. lat lon))
