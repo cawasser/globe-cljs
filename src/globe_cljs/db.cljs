@@ -15,5 +15,5 @@
 
 (def default-db
   {:name               "re-frame"
-   :sensor-allocations sd/sensor-data})
+   :sensor-allocations sd/all-sensor-data})
 

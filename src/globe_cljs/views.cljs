@@ -42,7 +42,7 @@
   [:div.slidecontainer
    [:input#myRange.slider
     {:style     {:width 400}
-     :type      "range" :min "0" :max "100" :value @current-time-t
+     :type      "range" :min "0" :max "9" :value @current-time-t
      :on-change #(do
                    ;(log/info "time-slider" (js/parseInt (-> % .-target .-value)))
                    (re-frame/dispatch-sync [::events/update-time id (js/parseInt (-> % .-target .-value))]))}]])
