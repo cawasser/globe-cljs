@@ -22,10 +22,6 @@
     (assoc-in db [:widgets id] db/globe-config)))
 
 
-(defn seconds [t]
-  (* t 1000))
-
-
 (re-frame/reg-event-db
   ::update-time
   (fn-traced [db [_ id new-time]]
@@ -86,23 +82,3 @@
           the-fn (if (contains? current-set selection) disj conj)]
       (update-in db [:widgets globe-id :selected-sensors] the-fn selection))))
 
-
-(comment
-  (re-frame/dispatch-sync [::toggle-sensor "globe-1" "dummy"])
-
-
-  (def db @re-frame.db/app-db)
-  (def globe-id "globe-1")
-  (def s "abi-meso-11")
-
-  (def current-set (get-in db [:widgets globe-id :selected-sensors]))
-  (def the-fn (if (contains? current-set s) conj disj))
-
-  (let [current-set (get-in db [:widgets globe-id :selected-sensors])
-        the-fn (if (contains? current-set s) disj conj)]
-    (update-in db [:widgets globe-id :selected-sensors] the-fn s))
-
-
-
-
-  ())
