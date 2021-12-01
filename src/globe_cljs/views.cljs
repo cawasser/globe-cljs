@@ -9,25 +9,25 @@
     [globe-cljs.globe.globe :as g]))
 
 
-(def sensor-color-pallet [[:green [0.0 0.5 0.0 0.3]]        ; "abi-3"
-                          [:blue [0.0 0. 1.0 0.3]]          ; "abi-1"
-                          [:orange [1.0 0.65 0.0 0.3]]      ; "avhhr-6"
-                          [:grey [0.5 0.5 0.5 0.3]]         ; "viirs-5"
-                          [:cornflowerblue [0.4 0.58 0.93 0.3]] ; "abi-meso-11"
-                          [:darkcyan [1.0 0.55 0.55 0.3]]   ; "abi-meso-4"
-                          [:goldenrod [0.84 0.65 0.13 0.3]] ; "abi-meso-10"
-                          [:khaki [0.94 0.90 0.55 0.3]]     ; "abi-meso-2"
-                          [:deepskyblue [1.0 0.0 1.0 0.3]]
-                          [:navy [0.0 0.0 0.5 0.3]]
-                          [:cyan [0.0 1.0 1.0 0.9]]
-                          [:darkred [0.55 0.0 0.0 0.3]]
-                          [:darkseagreen [0.55 0.74 0.56 0.3]]
-                          [:darkviolet [0.58 0 0.83 0.3]]
-                          [:forestgreen [1.0 0.71 0.76 0.9]]
-                          [:orchid [0.84 0.44 0.84 0.3]]
-                          [:plum [0.87 0.63 0.87 0.9]]
-                          [:tomato [1.0 0.39 0.28 0.3]]
-                          [:orangered [1.0 0.27 0.0 0.3]]])
+(def sensor-color-pallet [[:green "rgba(0, 128, 0, .3)" [0.0 0.5 0.0 0.3]] ; "abi-3"
+                          [:blue "rgba(0, 0, 255, .3)" [0.0 0. 1.0 0.3]] ; "abi-1"
+                          [:orange "rgba(255, 165, 0, .3)" [1.0 0.65 0.0 0.3]] ; "avhhr-6"
+                          [:grey "rgba(128, 128, 128, .3)" [0.5 0.5 0.5 0.3]] ; "viirs-5"
+                          [:cornflowerblue "rgba(100, 149, 237, .3)" [0.4 0.58 0.93 0.3]] ; "abi-meso-11"
+                          [:darkcyan "rgba(0, 139, 139, .3)" [1.0 0.55 0.55 0.3]] ; "abi-meso-4"
+                          [:goldenrod "rgba(218, 165, 32, .3)" [0.84 0.65 0.13 0.3]] ; "abi-meso-10"
+                          [:khaki "rgba(240, 230, 140, .3)" [0.94 0.90 0.55 0.3]] ; "abi-meso-2"
+                          [:deepskyblue "rgba(0, 191, 255, .3)" [1.0 0.0 1.0 0.3]]
+                          [:navy "rgba(0, 0, 128, .3)" [0.0 0.0 0.5 0.3]]
+                          [:cyan "rgba(0, 255, 255, .3)" [0.0 1.0 1.0 0.9]]
+                          [:darkred "rgba(139, 0, 0, .3)" [0.55 0.0 0.0 0.3]]
+                          [:darkseagreen "rgba(143, 188, 143, .3)" [0.55 0.74 0.56 0.3]]
+                          [:darkviolet "rgba(148, 0, 211, .3)" [0.58 0 0.83 0.3]]
+                          [:forestgreen "rgba(34, 139, 34, .3)" [1.0 0.71 0.76 0.9]]
+                          [:orchid "rgba(218, 112, 214, .3)" [0.84 0.44 0.84 0.3]]
+                          [:plum "rgba(221, 160, 221, .3)" [0.87 0.63 0.87 0.9]]
+                          [:tomato "rgba(255, 99, 71, .3)" [1.0 0.39 0.28 0.3]]
+                          [:orangered "rgba(255, 69, 0, .3)" [1.0 0.27 0.0 0.3]]])
 
 
 (defn- get-sensor-colors [sensors]
@@ -60,14 +60,16 @@
 
 
 (defn- sensor-visibility-control [globe-id sensors selected-sensors colors]
-  [:div {:style {:display :flex
+  [:div {:style {:display        :flex
                  :flex-direction :row}}
    (doall
      (for [s @sensors]
        ^{:key s}
-       [:div {:style {:background-color (first (get colors s))
-                      :margin "5px"
-                      :padding "5px"}}
+       [:div {:style {:background-color (second (get colors s))
+                      :border           "solid 2px"
+                      :border-color     (first (get colors s))
+                      :margin           "5px"
+                      :padding          "5px"}}
         [:input {:type     "checkbox"
                  :value    (contains? @selected-sensors s)
                  :on-click #(re-frame/dispatch-sync
@@ -102,7 +104,7 @@
                  :style      {:background-color :black
                               :width            "50%" :height "100%"}}
         (merge @base-layer @layers)]])))
-        ;@base-layer]])))
+;@base-layer]])))
 
 
 (defn main-panel []

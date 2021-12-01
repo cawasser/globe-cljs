@@ -26,14 +26,14 @@
                             (location/location location)))
                      (into-array))
         center (position/position (get cell/cell-centers pos))
-        [color-name color] (get colors sensor)
+        [color-name _ ww-color] (get colors sensor)
         layer-name (str cell-text "-" sensor)]
 
-    (log/info "make-polygon" pos sensor color-name color)
+    ;(log/info "make-polygon" pos sensor color-name ww-color)
 
     {layer-name
      (rl/renderable-layer layer-name
-       [(poly/polygon locations {:color color})
+       [(poly/polygon locations {:color ww-color})
         (geo-text/geographic-text center sensor
           (text-attr/text-attributes))])}))
 
