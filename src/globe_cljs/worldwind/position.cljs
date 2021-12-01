@@ -1,6 +1,7 @@
 (ns globe-cljs.worldwind.position
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]
+
             [globe-cljs.worldwind.defaults :as default]))
 
 

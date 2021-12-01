@@ -1,10 +1,6 @@
 (ns globe-cljs.worldwind.layer.layer
   (:require ["worldwindjs" :as WorldWind]
-            [reagent.core :as reagent]
-            [reagent.dom :as rdom]
-            [re-frame.core :as rf]
-            [taoensso.timbre :as log]
-            [clojure.set :as set]))
+            [taoensso.timbre :as log]))
 
 
 ; for debugging at the repl

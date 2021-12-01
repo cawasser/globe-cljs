@@ -1,9 +1,6 @@
 (ns globe-cljs.worldwind.layer.renderable
   (:require ["worldwindjs" :as WorldWind]
-            [taoensso.timbre :as log]
-            [re-frame.core :as re-frame]
-            [globe-cljs.events :as events]
-            [globe-cljs.subs :as subs]))
+            [taoensso.timbre :as log]))
 
 
 (defn renderable-layer [layer-name children]

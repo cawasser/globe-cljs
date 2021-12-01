@@ -7,7 +7,6 @@
     [taoensso.timbre :as log]
 
     [globe-cljs.globe.globe :as g]))
-    ;[globe-cljs.renderableLayer :as l]))
 
 
 (def sensor-color-pallet [[:green [0.0 0.5 0.0 0.3]]        ; "abi-3"
