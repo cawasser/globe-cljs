@@ -2,7 +2,9 @@
   (:require
     [re-frame.core :as re-frame]
     [re-frame.db :as rdb]
-    [taoensso.timbre :as log]))
+    [taoensso.timbre :as log]
+
+    [globe-cljs.worldwind.defaults :as defaults]))
 
 
 (re-frame/reg-sub
@@ -14,19 +16,19 @@
 (re-frame/reg-sub
   ::base-layers
   (fn [db [_ id]]
-    (get-in db [:widgets id :base-layers])))
+    (or (get-in db [:widgets id :base-layers]) [])))
 
 
 (re-frame/reg-sub
   ::projection
   (fn [db [_ id]]
-    (get-in db [:widgets id :projection])))
+    (or (get-in db [:widgets id :projection]) defaults/projection)))
 
 
 (re-frame/reg-sub
   ::selected-sensors
   (fn [db [_ id]]
-    (get-in db [:widgets id :selected-sensors])))
+    (or (get-in db [:widgets id :selected-sensors]) #{})))
 
 
 (re-frame/reg-sub
@@ -38,21 +40,25 @@
      (re-frame/subscribe [::sensor-allocations])])
 
   (fn [[time selected-sensors sensor-allocations] [_ id]]
-    (let [cells (->> sensor-allocations
-                  (filter #(= time (:time %)))
-                  (map (juxt :cell :coverage))
-                  (mapcat (fn [[cell coverages]]
-                            (for [c coverages]
-                              {cell (:sensor c)})))
-                  (filter #(contains? selected-sensors (first (vals %)))))]
-      (log/info "::current-cells" cells)
-      cells)))
+    (if-let [cells (->> sensor-allocations
+                     (filter #(= time (:time %)))
+                     (map (juxt :cell :coverage))
+                     (mapcat (fn [[cell coverages]]
+                               (for [c coverages]
+                                 {cell (:sensor c)})))
+                     (filter #(contains? selected-sensors (first (vals %)))))]
+      (do
+        (log/info "::current-cells" cells)
+        cells)
+      (do
+        (log/info "::current-cells returning []")
+        []))))
 
 
 (re-frame/reg-sub
   ::time
   (fn [db [_ id]]
-    (get-in db [:widgets id :time])))
+    (or (get-in db [:widgets id :time]) 0)))
 
 
 (re-frame/reg-sub
@@ -68,6 +74,4 @@
 (re-frame/reg-sub
   ::sensor-allocations
   (fn [db _]
-    (:sensor-allocations db))
-
- ())
+    (or (:sensor-allocations db) [])))

@@ -99,9 +99,10 @@
 
        [g/globe {:id         globe-id
                  :projection (or @projection "3D")
-                 :style      {:background-color :lightblue
+                 :style      {:background-color :black
                               :width            "50%" :height "100%"}}
         (merge @base-layer @layers)]])))
+        ;@base-layer]])))
 
 
 (defn main-panel []

@@ -17,10 +17,6 @@
 
 
 
-(defn- sensor-color [sensor]
-  (color/yellow 0.3))
-
-
 (defn- make-polygon [colors cell]
   (let [[pos sensor] (first cell)
         cell-text (str pos)
