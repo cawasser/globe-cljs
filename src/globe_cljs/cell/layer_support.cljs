@@ -63,7 +63,7 @@
   (fn [[_ id] _]
     (re-frame/subscribe [::subs/current-cells id]))
 
-  (fn [cells _]
+  (fn [cells [_ id]]
     (->> cells
       (map #(make-polygon (first (keys %)) (first (vals %))))
       (into {})
