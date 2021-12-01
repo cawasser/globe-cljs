@@ -2,6 +2,7 @@
   (:require [globe-cljs.worldwind.layer.blue-marble :as blue-marble]
             [globe-cljs.worldwind.layer.compass :as compass]
             [globe-cljs.worldwind.layer.star-field :as star-field]
+            [globe-cljs.worldwind.layer.night :as night]
             [globe-cljs.sensor-data :as sd]))
 
 
@@ -9,7 +10,8 @@
   {:projection       "3D"
    :base-layers      {"Blue Marble" (blue-marble/blue-marble "Blue Marble")
                       "Compass"     (compass/compass "Compass")
-                      "Star Field"  (star-field/star-field "Star Field")}
+                      "Star Field"  (star-field/star-field "Star Field")
+                      "Night"       (night/night "Night")}
    :selected-sensors #{}
    :layers           {}
    :time             0})
