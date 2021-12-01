@@ -1,6 +1,7 @@
 (ns globe-cljs.db
   (:require [globe-cljs.worldwind.layer.blue-marble :as blue-marble]
-            [globe-cljs.worldwind.layer.compass :as compass]))
+            [globe-cljs.worldwind.layer.compass :as compass]
+            [globe-cljs.sensor-data :as sd]))
 
 
 (def globe-config
@@ -12,5 +13,6 @@
 
 
 (def default-db
-  {:name "re-frame"})
+  {:name "re-frame"
+   :sensor-allocations sd/sensor-data})
 

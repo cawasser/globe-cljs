@@ -5,7 +5,9 @@
     [globe-cljs.events :as events]
     [globe-cljs.views :as views]
     [globe-cljs.config :as config]
-    [taoensso.timbre :as log]))
+    [taoensso.timbre :as log]
+
+    [globe-cljs.cell.layer-support]))
 
 
 (defn dev-setup []
