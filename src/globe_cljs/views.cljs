@@ -6,9 +6,8 @@
     [globe-cljs.events :as events]
     [taoensso.timbre :as log]
 
-    [globe-cljs.globe :as g]
-    [globe-cljs.reagent-context :as rc]
-    [globe-cljs.renderableLayer :as l]))
+    [globe-cljs.globe.globe :as g]))
+    ;[globe-cljs.renderableLayer :as l]))
 
 
 (def sensor-color-pallet [[:green [0.0 0.5 0.0 0.3]]        ; "abi-3"
@@ -86,21 +85,24 @@
         projection       (re-frame/subscribe [::subs/projection globe-id])
         time-t           (re-frame/subscribe [::subs/time globe-id])]
 
-    [:div
-     [:div
-      [:h1 globe-id]
+    (re-frame/dispatch-sync [::events/init-widget globe-id])
 
-      [time-slider globe-id time-t]
-
+    (fn []
       [:div
-       [sensor-visibility-control globe-id sensors selected-sensors colors]
-       [projection-control globe-id projection]]]
+       [:div
+        [:h1 globe-id]
 
-     [g/globe {:id         globe-id
-               :projection (or @projection "3D")
-               :style      {:background-color :lightblue
-                            :width            "50%" :height "100%"}}
-      (merge @base-layer @layers)]]))
+        [time-slider globe-id time-t]
+
+        [:div
+         [sensor-visibility-control globe-id sensors selected-sensors colors]
+         [projection-control globe-id projection]]]
+
+       [g/globe {:id         globe-id
+                 :projection (or @projection "3D")
+                 :style      {:background-color :lightblue
+                              :width            "50%" :height "100%"}}
+        (merge @base-layer @layers)]])))
 
 
 (defn main-panel []
@@ -120,19 +122,52 @@
   ())
 
 
+; try updating the app-db and seeing if the globe updates
 (comment
-  (def globe-id "globe-1")
-  (def base-layer (re-frame/subscribe [::subs/base-layers globe-id]))
-  (def layers (re-frame/subscribe [::subs/layers globe-id]))
+  (rf/dispatch-sync [:globe-cljs.events/add-base-layer "my-first-globe"
+                     "Compass" (globe-cljs.worldwind.layer.compass/compass "Compass")])
+  (rf/dispatch-sync [:globe-cljs.events/remove-base-layer "my-first-globe" "Compass"])
 
-  (g/globe {:id "my-globe"} @layers)
+  (rf/dispatch-sync [:globe-cljs.events/add-base-layer "my-first-globe"
+                     "Tesselation" (globe-cljs.worldwind.layer.tesselation/tesselation "Tesselation")])
+  (rf/dispatch-sync [:globe-cljs.events/remove-base-layer "my-first-globe" "Tesselation"])
 
-  (merge @base-layer @layers)
-
-  @re-frame.db/app-db
-
-  (map (fn [[k v :as l]] {:k k :l l})
-    (:layers @re-frame.db/app-db))
-
+  (rf/dispatch-sync [:globe-cljs.events/add-base-layer "my-first-globe"
+                     "Blue Marble" (globe-cljs.worldwind.layer.blue-marble/blue-marble "Blue Marble")])
+  (rf/dispatch-sync [:globe-cljs.events/remove-base-layer "my-first-globe" "Blue Marble"])
 
   ())
+
+
+; now we can try a more complicated layer: renderable with polygons!
+(comment
+  (do
+    (require '[globe-cljs.layer.renderable :as rl])
+    (require '[globe-cljs.surface.polygon :as poly])
+    (def children [(poly/polygon [0 0] {:color [255 0 0 1]})
+                   (poly/polygon [0 1] {:color [0 255 0 1]})
+                   (poly/polygon [1 0] {:color [0 0 255 1]})])
+    (def layer (rl/createLayer "polygons" children)))
+
+  (count (.-renderables layer))
+
+  (rf/dispatch-sync [:globe-cljs.events/add-layer "my-first-globe"
+                     "polygons" (rl/createLayer
+                                  "polygons"
+                                  [(poly/polygon [0 0] {:color [255 0 0 1]})
+                                   (poly/polygon [8 0] {:color [255 0 0 1]})
+                                   (poly/polygon [0 1] {:color [0 255 0 1]})
+                                   (poly/polygon [1 0] {:color [0 0 255 1]})])])
+  (rf/dispatch-sync [:globe-cljs.events/remove-layer "my-first-globe" "polygons"])
+  @re-frame.db/app-db
+
+  ; now some other polygons
+  (rf/dispatch-sync [:globe-cljs.events/add-layer
+                     "poly-2" (rl/createLayer "poly-2"
+                                [(poly/polygon [5 5]
+                                   {:color [128 128 0 1]})])])
+  (rf/dispatch-sync [:globe-cljs.events/remove-layer "poly-2"])
+
+  ())
+
+

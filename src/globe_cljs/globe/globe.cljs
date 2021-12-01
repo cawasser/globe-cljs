@@ -1,8 +1,8 @@
-(ns globe-cljs.globe
+(ns globe-cljs.globe.globe
   (:require ["worldwindjs" :as WorldWind]
             [reagent.core :as reagent]
             [reagent.dom :as rdom]
-            [re-frame.core :as rf]
+            [re-frame.core :as rf] ;????
             [taoensso.timbre :as log]
             [clojure.set :as set]
 
@@ -14,6 +14,7 @@
 
 
 (def DEFAULT_BACKGROUND_COLOR "rgb(36,74,101)")
+
 
 (def projections ["3D",
                   "Equirectangular",
@@ -205,4 +206,3 @@
     (WorldWind/ProjectionEquirectangular.))
 
   ())
-
