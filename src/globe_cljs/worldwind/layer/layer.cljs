@@ -14,9 +14,9 @@
 (defn getLayer [this layer-name]
   (let [layer (.filter (.. this -wwd -layers)
                 #(= (.-displayName %) layer-name))]
-    (log/info "getLayer"
-      (.-length layer)
-      (map #(.-displayName %) layer))
+    ;(log/info "getLayer"
+    ;  (.-length layer)
+    ;  (map #(.-displayName %) layer))
     (first layer)))
 
 

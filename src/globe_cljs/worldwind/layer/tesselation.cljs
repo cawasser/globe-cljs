@@ -4,7 +4,7 @@
 
 
 (defn tesselation [layer-name]
-  (log/info "createLayer" layer-name)
+  ;(log/info "createLayer" layer-name)
 
   (let [layer (WorldWind/ShowTessellationLayer.)]
     (set! (.-displayName layer) layer-name)

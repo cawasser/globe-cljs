@@ -6,10 +6,10 @@
 
 (defn position
   ([[lat lon]]
-   (log/info "[lat lon]")
+   ;(log/info "[lat lon]")
    (WorldWind/Position. lat lon default/altitude))
 
   ([[lat lon] alt]
-   (log/info "[lat lon] alt")
+   ;(log/info "[lat lon] alt")
    (WorldWind/Position. lat lon alt)))
 

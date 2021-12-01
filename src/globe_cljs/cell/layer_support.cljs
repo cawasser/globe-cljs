@@ -16,37 +16,12 @@
             [globe-cljs.worldwind.surface.polygon :as poly]))
 
 
-(def sensor-color-pallet [{:r 0x00 :g 0x80 :b 0x00 :a 0.3}  ; green
-                          {:r 0x00 :g 0x00 :b 0xff :a 0.3}  ; blue
-                          {:r 0xff :g 0xa5 :b 0x00 :a 0.3}  ; orange
-                          {:r 0x80 :g 0x80 :b 0x80 :a 0.3}  ; grey
-                          {:r 0x64 :g 0x95 :b 0xed :a 0.3}  ; cornflowerblue
-                          {:r 0xff :g 0x8b :b 0x8b :a 0.3}  ; darkcyan
-                          {:r 0xda :g 0xa5 :b 0x20 :a 0.3}  ; goldenrod
-                          {:r 0xf0 :g 0xe6 :b 0x8c :a 0.3}  ; khaki
-                          {:r 0xff :g 0x00 :b 0xff :a 0.3}  ; deepskyblue
-                          {:r 0x00 :g 0x00 :b 0x80 :a 0.3}  ; navy
-                          {:r 0x00 :g 0xff :b 0xff :a 0.9}  ; cyan
-                          {:r 0x8b :g 0x00 :b 0x00 :a 0.3}  ; darkred
-                          {:r 0x8f :g 0xbc :b 0x8f :a 0.3}  ; darkseagreen
-                          {:r 0x94 :g 0x00 :b 0xd3 :a 0.3}  ; darkviolet
-                          {:r 0x22 :g 0x8b :b 0x33 :a 0.3}  ; forestgreen
-                          {:r 0xff :g 0xb6 :b 0xc1 :a 0.9}  ; lightpink
-                          {:r 0xda :g 0x70 :b 0xd6 :a 0.3}  ; orchid
-                          {:r 0xdd :g 0xa0 :b 0xdd :a 0.9}  ; plum
-                          {:r 0xff :g 0x63 :b 0x47 :a 0.3}  ; tomato
-                          {:r 0xff :g 0x45 :b 0x00 :a 0.3}])
-
-
-(defn get-sensor-colors [pl]
-  (zipmap (into #{} (map key pl)) (cycle sensor-color-pallet)))
-
 
 (defn- sensor-color [sensor]
   (color/yellow 0.3))
 
 
-(defn- make-polygon [cell]
+(defn- make-polygon [colors cell]
   (let [[pos sensor] (first cell)
         cell-text (str pos)
         boundaries (cell/cell-boundaries pos)
@@ -54,23 +29,28 @@
                      (map (fn [location]
                             (location/location location)))
                      (into-array))
-        center (position/position (get cell/cell-centers pos))]
-    {cell-text
-     (rl/renderable-layer cell-text
-       [(poly/polygon locations {:color (sensor-color sensor)})
-        (geo-text/geographic-text center cell-text
+        center (position/position (get cell/cell-centers pos))
+        [color-name color] (get colors sensor)
+        layer-name (str cell-text "-" sensor)]
+
+    (log/info "make-polygon" pos sensor color-name color)
+
+    {layer-name
+     (rl/renderable-layer layer-name
+       [(poly/polygon locations {:color color})
+        (geo-text/geographic-text center sensor
           (text-attr/text-attributes))])}))
 
 
 (re-frame/reg-sub
   ::subs/layers
 
-  (fn [[_ id] _]
+  (fn [[_ id _] _]
     (re-frame/subscribe [::subs/current-cells id]))
 
-  (fn [cells [_ id]]
+  (fn [cells [_ id colors]]
     (->> cells
-      (map #(make-polygon %))
+      (map #(make-polygon colors %))
       (into {})
       (merge (get-in @rdb/app-db [:widgets id :layers])))))
 

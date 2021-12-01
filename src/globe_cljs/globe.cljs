@@ -30,25 +30,25 @@
 (defn- change-projection [this new-projection]
   (reset! last-this this)
 
-  (log/info "change-projection" new-projection
-    "//// roundGlobe" (.-roundGlobe this)
-    "//// flatGlobe " (.-flatGlobe this))
+  ;(log/info "change-projection" new-projection
+  ;  "//// roundGlobe" (.-roundGlobe this)
+  ;  "//// flatGlobe " (.-flatGlobe this))
 
   (if (= "3D" new-projection)
     (do
-      (log/info "changing to roundGlobe")
+      ;(log/info "changing to roundGlobe")
       (if (not (.-roundGlobe this))
         (set! (.-roundGlobe this) (WorldWind/Globe. (WorldWind/EarthElevationModel.))))
 
       ; Replace the flat globe
       (if (not= (.. this -wwd -globe) (.-roundGlobe this))
         (do
-          (log/info "setting the roundGlobe" (.-roundGlobe this))
+          ;(log/info "setting the roundGlobe" (.-roundGlobe this))
           (set! (.. this -wwd -globe) (.-roundGlobe this))
           (.redraw (.-wwd this)))))
 
     (do
-      (log/info "changing to flatGlobe")
+      ;(log/info "changing to flatGlobe")
 
       (if (not (.-flatGlobe this))
         (set! (.-flatGlobe this) (WorldWind/Globe2D.)))
@@ -66,7 +66,7 @@
 
       (if (not= (.. this -wwd -globe) (.-flatGlobe this))
         (do
-          (log/info "setting the flatGlobe" (.-flatGlobe this))
+          ;(log/info "setting the flatGlobe" (.-flatGlobe this))
           (set! (.. this -wwd -globe) (.-flatGlobe this))
           (.redraw (.-wwd this)))))))
 
@@ -94,7 +94,7 @@
 
 
 (defn- component-did-mount [dom-node state this]
-  (log/info "component-did-mount" @state)
+  ;(log/info "component-did-mount" @state)
 
   (reset! last-this this)
 
@@ -112,7 +112,7 @@
     ; Apply projection support
     (set! (.-roundGlobe this) (.-globe (.-wwd this)))
 
-    (log/info "mount projection" (:projection props))
+    ;(log/info "mount projection" (:projection props))
 
     (if (:projection props)
       (change-projection this (:projection props)))
@@ -131,14 +131,14 @@
   (let [[_ new-props new-children] (reagent/argv this)
         [old-id old-props old-children] old-argv]
 
-    (log/info "component-did-update old-children" old-children
-      "//// old-props" old-props
-      "//// new-children" new-children
-      "//// new-props" new-props)
+    ;(log/info "component-did-update old-children" old-children
+    ;  "//// old-props" old-props
+    ;  "//// new-children" new-children
+    ;  "//// new-props" new-props)
 
-    (log/info "projection"
-      (:projection old-props)
-      (:projection new-props))
+    ;(log/info "projection"
+    ;  (:projection old-props)
+    ;  (:projection new-props))
 
     (if (not= (:projection old-props) (:projection new-props))
       (change-projection this (:projection new-props)))
@@ -156,9 +156,9 @@
       {:display-name         (:id props)
 
        :constructor          (fn [this props children]
-                               (log/info "constructor" props
-                                 "////" (reagent/props this)
-                                 "////" (reagent/children this))
+                               ;(log/info "constructor" props
+                               ;  "////" (reagent/props this)
+                               ;  "////" (reagent/children this))
                                (swap! state assoc
                                  :nextIndex 0
                                  :wwd ()

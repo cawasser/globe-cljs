@@ -11,14 +11,14 @@
 (re-frame/reg-event-db
  ::initialize-db
  (fn-traced [_ _]
-   (log/info ":initialize-db")
+   ;(log/info ":initialize-db")
    db/default-db))
 
 
 (re-frame/reg-event-db
   ::init-widget
   (fn-traced [db [_ id]]
-    (log/info "init-widget" id)
+    ;(log/info "init-widget" id)
     (assoc-in db [:widgets id] db/globe-config)))
 
 
@@ -29,7 +29,7 @@
 (re-frame/reg-event-db
   ::update-time
   (fn-traced [db [_ id new-time]]
-    (log/info "update-time" id new-time)
+    ;(log/info "update-time" id new-time)
     (assoc-in db [:widgets id :time] new-time)))
 
 
@@ -42,7 +42,7 @@
 (re-frame/reg-event-db
   ::set-projection
   (fn-traced [db [_ id new-projection]]
-    (log/info "set-projection" id new-projection)
+    ;(log/info "set-projection" id new-projection)
     (assoc-in db [:widgets id :projection] new-projection)))
 
 

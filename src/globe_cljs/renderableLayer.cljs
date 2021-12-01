@@ -10,7 +10,7 @@
     ;; This will trigger a re-render of the component.
     (reset! dom-node node))
 
-  (log/info "renderableLayer/component-did-mount")
+  ;(log/info "renderableLayer/component-did-mount")
 
   (rdom/render
     [:div (reagent/props this) "renderableLayer"]
