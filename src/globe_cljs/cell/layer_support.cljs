@@ -42,17 +42,22 @@
   (zipmap (into #{} (map key pl)) (cycle sensor-color-pallet)))
 
 
-(defn- make-polygon [cell sensor]
-  (let [cell-text (str cell)
-        boundaries (cell/cell-boundaries cell)
+(defn- sensor-color [sensor]
+  (color/yellow 0.3))
+
+
+(defn- make-polygon [cell]
+  (let [[pos sensor] (first cell)
+        cell-text (str pos)
+        boundaries (cell/cell-boundaries pos)
         locations  (->> boundaries
                      (map (fn [location]
                             (location/location location)))
                      (into-array))
-        center (position/position (get cell/cell-centers cell))]
+        center (position/position (get cell/cell-centers pos))]
     {cell-text
      (rl/renderable-layer cell-text
-       [(poly/polygon locations {:color (color/yellow 0.3)})
+       [(poly/polygon locations {:color (sensor-color sensor)})
         (geo-text/geographic-text center cell-text
           (text-attr/text-attributes))])}))
 
@@ -65,7 +70,7 @@
 
   (fn [cells [_ id]]
     (->> cells
-      (map #(make-polygon (first (keys %)) (first (vals %))))
+      (map #(make-polygon %))
       (into {})
       (merge (get-in @rdb/app-db [:widgets id :layers])))))
 
@@ -86,5 +91,23 @@
           (rl/createLayer (str cell)
             [(poly/polygon cell {:color [128 128 0 0.3]})])}
     (:layers @re-frame.db/app-db))
+
+  ())
+
+
+; how do we destructure the key and value of the cell data?
+(comment
+  (def cell {[0 0] "sensor-1"})
+  (def cell-data [{[0 0] "sensor-1"}
+                  {[0 0] "sensor-2"}])
+
+  (let [[k v] (first cell)]
+    {:k k :v v})
+
+  (map (fn [c]
+         (let [[k v] (first c)]
+           {:k k :v v}))
+    cell-data)
+
 
   ())
