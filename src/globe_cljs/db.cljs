@@ -5,14 +5,15 @@
 
 
 (def globe-config
-  {:projection   "3D"
-   :base-layers  {"Blue Marble" (blue-marble/blue-marble "Blue Marble")
-                  "Compass"     (compass/compass "Compass")}
-   :layers       {}
-   :timer        0})
+  {:projection  "3D"
+   :base-layers {"Blue Marble" (blue-marble/blue-marble "Blue Marble")
+                 "Compass"     (compass/compass "Compass")}
+   :selected-sensors #{}
+   :layers      {}
+   :time        0})
 
 
 (def default-db
-  {:name "re-frame"
+  {:name               "re-frame"
    :sensor-allocations sd/sensor-data})
 

@@ -18,30 +18,51 @@
      :type      "range" :min "0" :max "100" :value @current-time-t
      :on-change #(do
                    (log/info "time-slider" (js/parseInt (-> % .-target .-value)))
-                   (re-frame/dispatch-sync [::events/update-timer id (js/parseInt (-> % .-target .-value))]))}]])
+                   (re-frame/dispatch-sync [::events/update-time id (js/parseInt (-> % .-target .-value))]))}]])
+
+
+(defn- projection-control [globe-id projections]
+  [:div
+   [:label {:for "projections"} "Projection:"]
+   [:select#projections {:name      "projections"
+                         :value     @projections
+                         :on-change #(re-frame/dispatch
+                                       [::events/set-projection globe-id (-> % .-target .-value)])}
+    (doall
+      (map (fn [p]
+             ^{:key p} [:option {:value p} p])
+        g/projections))]])
+
+
+(defn- sensor-visibility-control [globe-id sensors selected-sensors]
+  [:div {:flexdirection :row
+         :flexwrap :wrap}
+   (for [s @sensors]
+     [:div
+      [:input {:type     "checkbox"
+               :value    (contains? @selected-sensors s)
+               :on-click #(re-frame/dispatch-sync
+                            [::events/toggle-sensor globe-id s])}]
+      [:label s]])])
 
 
 (defn- globe [globe-id]
-  (let [base-layer (re-frame/subscribe [::subs/base-layers globe-id])
-        layers     (re-frame/subscribe [::subs/layers globe-id])
-        projection (re-frame/subscribe [::subs/projection globe-id])
-        timer      (re-frame/subscribe [::subs/timer globe-id])]
+  (let [base-layer       (re-frame/subscribe [::subs/base-layers globe-id])
+        layers           (re-frame/subscribe [::subs/layers globe-id])
+        projection       (re-frame/subscribe [::subs/projection globe-id])
+        time-t           (re-frame/subscribe [::subs/time globe-id])
+        sensors          (re-frame/subscribe [::subs/sensor-types])
+        selected-sensors (re-frame/subscribe [::subs/selected-sensors])]
+
     [:div
      [:div
       [:h1 globe-id]
 
-      [time-slider globe-id timer]
+      [time-slider globe-id time-t]
 
       [:div
-       [:label {:for "projections"} "Projection:"]
-       [:select#projections {:name      "projections"
-                             :value     @projection
-                             :on-change #(re-frame/dispatch
-                                           [::events/set-projection globe-id (-> % .-target .-value)])}
-        (doall
-          (map (fn [p]
-                 ^{:key p} [:option {:value p} p])
-            g/projections))]]]
+       [sensor-visibility-control globe-id sensors selected-sensors]
+       [projection-control globe-id projection]]]
 
      [g/globe {:id         globe-id
                :projection (or @projection "3D")

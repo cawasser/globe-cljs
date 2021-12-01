@@ -1,7 +1,9 @@
 (ns globe-cljs.events
   (:require
    [re-frame.core :as re-frame]
+   [re-frame.db]
    [globe-cljs.db :as db]
+   [globe-cljs.subs :as subs]
    [day8.re-frame.tracing :refer-macros [fn-traced]]
    [taoensso.timbre :as log]))
 
@@ -24,27 +26,11 @@
   (* t 1000))
 
 
-
 (re-frame/reg-event-db
-  ::update-timer
+  ::update-time
   (fn-traced [db [_ id new-time]]
-    (log/info "update-timer" id new-time)
-    (assoc-in db [:widgets id :timer] new-time)))
-
-
-;(re-frame/reg-event-db
-;  ::toggle-timer
-;  (fn-traced [db [_ id]]
-;    (log/info "toggle-timer" id)
-;    (if-let [timer (get-in db [:widgets id :timer])]
-;      (do
-;        (log/info "stopping" id)
-;        (js/clearInterval timer)
-;        (assoc-in db [:widgets id :timer] nil))
-;      (do
-;        (log/info "starting" id)
-;        (assoc-in db [:widgets id :timer] (js/setInterval #(re-frame/dispatch-sync [::move-cell id])
-;                                            (seconds 0.5)))))))
+    (log/info "update-time" id new-time)
+    (assoc-in db [:widgets id :time] new-time)))
 
 
 (re-frame/reg-event-db
@@ -92,16 +78,31 @@
       (assoc-in [:widgets id :layers] {layer-name layer}))))
 
 
-;(re-frame/reg-event-db
-;  ::move-cell
-;  (fn-traced [db [_ id]]
-;    (log/info "::move-cell from" id (get-in db [:widgets id ::globe-cljs.subs/current-cells]))
-;    (let [[current-r current-c] (get-in db [:widgets id ::globe-cljs.subs/current-cells])
-;          next-c (inc current-c)]
-;      (if (> next-c 9)
-;        (let [new-r (mod (inc current-r) 10)
-;              new-c 0]
-;          (assoc-in db [:widgets id ::globe-cljs.subs/current-cells] [new-r new-c]))
-;        (assoc-in db [:widgets id ::globe-cljs.subs/current-cells] [current-r next-c])))))
+(re-frame/reg-event-db
+  ::toggle-sensor
+
+  (fn-traced [db [_ globe-id selection]]
+    (let [current-set (get-in db [:widgets globe-id :selected-sensors])
+          the-fn (if (contains? current-set selection) disj conj)]
+      (update-in db [:widgets globe-id :selected-sensors] the-fn selection))))
 
 
+(comment
+  (re-frame/dispatch-sync [::toggle-sensor "globe-1" "dummy"])
+
+
+  (def db @re-frame.db/app-db)
+  (def globe-id "globe-1")
+  (def s "abi-meso-11")
+
+  (def current-set (get-in db [:widgets globe-id :selected-sensors]))
+  (def the-fn (if (contains? current-set s) conj disj))
+
+  (let [current-set (get-in db [:widgets globe-id :selected-sensors])
+        the-fn (if (contains? current-set s) disj conj)]
+    (update-in db [:widgets globe-id :selected-sensors] the-fn s))
+
+
+
+
+  ())

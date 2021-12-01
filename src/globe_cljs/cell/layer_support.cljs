@@ -2,6 +2,7 @@
   (:require [taoensso.timbre :as log]
 
             [re-frame.core :as re-frame]
+            [re-frame.db :as rdb]
             [globe-cljs.subs :as subs]
 
             [globe-cljs.cell.util :as cell]
@@ -15,7 +16,33 @@
             [globe-cljs.worldwind.surface.polygon :as poly]))
 
 
-(defn- make-polygon [cell]
+(def sensor-color-pallet [{:r 0x00 :g 0x80 :b 0x00 :a 0.3}  ; green
+                          {:r 0x00 :g 0x00 :b 0xff :a 0.3}  ; blue
+                          {:r 0xff :g 0xa5 :b 0x00 :a 0.3}  ; orange
+                          {:r 0x80 :g 0x80 :b 0x80 :a 0.3}  ; grey
+                          {:r 0x64 :g 0x95 :b 0xed :a 0.3}  ; cornflowerblue
+                          {:r 0xff :g 0x8b :b 0x8b :a 0.3}  ; darkcyan
+                          {:r 0xda :g 0xa5 :b 0x20 :a 0.3}  ; goldenrod
+                          {:r 0xf0 :g 0xe6 :b 0x8c :a 0.3}  ; khaki
+                          {:r 0xff :g 0x00 :b 0xff :a 0.3}  ; deepskyblue
+                          {:r 0x00 :g 0x00 :b 0x80 :a 0.3}  ; navy
+                          {:r 0x00 :g 0xff :b 0xff :a 0.9}  ; cyan
+                          {:r 0x8b :g 0x00 :b 0x00 :a 0.3}  ; darkred
+                          {:r 0x8f :g 0xbc :b 0x8f :a 0.3}  ; darkseagreen
+                          {:r 0x94 :g 0x00 :b 0xd3 :a 0.3}  ; darkviolet
+                          {:r 0x22 :g 0x8b :b 0x33 :a 0.3}  ; forestgreen
+                          {:r 0xff :g 0xb6 :b 0xc1 :a 0.9}  ; lightpink
+                          {:r 0xda :g 0x70 :b 0xd6 :a 0.3}  ; orchid
+                          {:r 0xdd :g 0xa0 :b 0xdd :a 0.9}  ; plum
+                          {:r 0xff :g 0x63 :b 0x47 :a 0.3}  ; tomato
+                          {:r 0xff :g 0x45 :b 0x00 :a 0.3}])
+
+
+(defn get-sensor-colors [pl]
+  (zipmap (into #{} (map key pl)) (cycle sensor-color-pallet)))
+
+
+(defn- make-polygon [cell sensor]
   (let [cell-text (str cell)
         boundaries (cell/cell-boundaries cell)
         locations  (->> boundaries
@@ -38,19 +65,10 @@
 
   (fn [cells _]
     (->> cells
-      (map #(make-polygon %))
+      (map #(make-polygon (first (keys %)) (first (vals %))))
       (into {})
-      (merge (:layers @re-frame.db/app-db)))))
+      (merge (get-in @rdb/app-db [:widgets id :layers])))))
 
-
-(comment
-  (def cells [[0 0]])
-  (->> cells
-    (map #(make-polygon %))
-    (into {})
-    (merge (:layers @re-frame.db/app-db)))
-
-  ())
 
 (comment
   (def children [(poly/polygon [0 0] {:color [255 0 0 1]})
@@ -70,4 +88,3 @@
     (:layers @re-frame.db/app-db))
 
   ())
-
