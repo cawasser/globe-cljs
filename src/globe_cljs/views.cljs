@@ -62,12 +62,14 @@
 
 
 (defn- sensor-visibility-control [globe-id sensors selected-sensors colors]
-  [:div {:flexdirection :row
-         :flexwrap      :wrap}
+  [:div {:style {:display :flex
+                 :flex-direction :row}}
    (doall
      (for [s @sensors]
        ^{:key s}
-       [:div {:style {:background-color (first (get colors s))}}
+       [:div {:style {:background-color (first (get colors s))
+                      :margin "5px"
+                      :padding "5px"}}
         [:input {:type     "checkbox"
                  :value    (contains? @selected-sensors s)
                  :on-click #(re-frame/dispatch-sync
