@@ -2,7 +2,7 @@
   (:require ["worldwindjs" :as WorldWind]
             [reagent.core :as reagent]
             [reagent.dom :as rdom]
-            [re-frame.core :as rf] ;????
+            [re-frame.core :as rf]                          ;????
             [taoensso.timbre :as log]
             [clojure.set :as set]
 
@@ -71,6 +71,16 @@
           (.redraw (.-wwd this)))))))
 
 
+(defn change-time [this globe-id new-time]
+  (reset! last-this this)
+
+  (if-let [layer (or (l/getLayer this (str globe-id " Night")) (l/getLayer this (str globe-id " Day-only")))]
+    (do
+      (log/info "change-time" (.-displayName layer) new-time)
+      (set! (.-time layer) new-time)
+      (.redraw (.-wwd this)))))
+
+
 (defn- update-children [this new-children old-children]
   (let [new-keys (set (keys new-children))
         old-keys (set (keys old-children))
@@ -105,6 +115,8 @@
   (let [canvasId (.-id @dom-node)
         props    (reagent/props this)]
 
+    (log/info "component-did-mount" (.-id @dom-node) (reagent/props this))
+
     ;Create the WorldWindow using the ID of the canvas
     (set! (.-wwd this) (WorldWind/WorldWindow. canvasId))
     (swap! state assoc :wwd (.-wwd this))
@@ -112,10 +124,11 @@
     ; Apply projection support
     (set! (.-roundGlobe this) (.-globe (.-wwd this)))
 
-    ;(log/info "mount projection" (:projection props))
 
     (if (:projection props)
-      (change-projection this (:projection props)))
+      (do
+        ;(log/info "set-projection"  canvasId(:projection props))
+        (change-projection this (:projection props))))
 
     (doall
       (for [[idx child] (map-indexed vector (first (reagent/children this)))]
@@ -124,7 +137,14 @@
           (l/addLayer this idx child))))
 
     ; add the controls layer
-    (l/addLayer this -1 ["Controls" (controls/controls this "Controls")])))
+    (l/addLayer this -1 ["Controls" (controls/controls this "Controls")])
+
+    (if (:time props)
+      (do
+        ;(log/info "set-time" canvasId (:time props))
+        (change-time this (:id @state) (:time props))))
+
+    (.redraw (.-wwd this))))
 
 
 (defn- component-did-update [dom-node state this old-argv]
@@ -143,7 +163,14 @@
     (if (not= (:projection old-props) (:projection new-props))
       (change-projection this (:projection new-props)))
 
-    (update-children this new-children old-children)))
+    (if (not= (:time old-props) (:time new-props))
+      (do
+        ;(log/info "update-time" (:id @state) (:time new-props))
+        (change-time this (:id @state) (:time new-props))))
+
+    (update-children this new-children old-children)
+
+    (.redraw (.-wwd this))))
 
 
 (defn globe [props & children]
@@ -204,5 +231,15 @@
 
   (set! (.. @last-this -flatGlobe -projection)
     (WorldWind/ProjectionEquirectangular.))
+
+  ())
+
+
+; change the time on a day or night layer, if there is one
+(comment
+  (def globe-id "globe-1")
+  (or (l/getLayer @last-this (str globe-id " Night"))
+    (l/getLayer @last-this (str globe-id " Day-only")))
+
 
   ())

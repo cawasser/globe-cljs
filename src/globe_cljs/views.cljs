@@ -6,7 +6,13 @@
     [globe-cljs.events :as events]
     [taoensso.timbre :as log]
 
+    [cljs-time.core :as cljs-time]
+    [cljs-time.coerce :as coerce]
+    [cljs-time.instant :as inst]
     [globe-cljs.globe.globe :as g]))
+
+
+(def starting-date-time (cljs-time/date-time 2022 1 15 12 0 0 0))
 
 
 (def sensor-color-pallet [[:green "rgba(0, 128, 0, .3)" [0.0 0.5 0.0 0.3]] ; "abi-3"
@@ -37,13 +43,22 @@
 
 
 (defn- time-slider [id current-time-t]
-  [:div.slidecontainer
-   [:input#myRange.slider
-    {:style     {:width 400}
-     :type      "range" :min "0" :max "9" :value @current-time-t
-     :on-change #(do
-                   ;(log/info "time-slider" (js/parseInt (-> % .-target .-value)))
-                   (re-frame/dispatch-sync [::events/update-time id (js/parseInt (-> % .-target .-value))]))}]])
+  [:div {:style {:display :flex
+                 :align-items :center
+                 :width "50%"}}
+
+   [:div.slidecontainer
+    [:input#myRange.slider
+     {:style     {:width 400 :margin-right "40px"}
+      :type      "range" :min "0" :max "9" :value @current-time-t
+      :on-change #(do
+                    ;(log/info "time-slider" (js/parseInt (-> % .-target .-value)))
+                    (re-frame/dispatch-sync [::events/update-time id (js/parseInt (-> % .-target .-value))]))}]]
+
+   [:h3 (str (coerce/to-date
+               (cljs-time/plus starting-date-time
+                 (cljs-time/hours (or @current-time-t 0)))))]])
+
 
 
 (defn- projection-control [globe-id projections]
@@ -89,7 +104,8 @@
     (re-frame/dispatch-sync [::events/init-widget globe-id])
 
     (fn []
-      [:div
+      [:div {:style {:padding "20px" :border-width "3px"
+                     :border-style :solid :border-color :black}}
        [:div
         [:h1 globe-id]
 
@@ -99,12 +115,16 @@
          [sensor-visibility-control globe-id sensors selected-sensors colors]
          [projection-control globe-id projection]]]
 
-       [g/globe {:id         globe-id
-                 :projection (or @projection "3D")
-                 :style      {:background-color :black
-                              :width            "50%" :height "100%"}}
-        (merge @base-layer @layers)]])))
-;@base-layer]])))
+       [:div {:style {:width "50%"}}
+        [g/globe {:id         globe-id
+                  :time       (coerce/to-date
+                                (cljs-time/plus starting-date-time
+                                  (cljs-time/hours (or @time-t 0))))
+                  :projection (or @projection "3D")
+                  :style      {:background-color :black
+                               :width "100%"
+                               :height "100%"}}
+         (merge @base-layer @layers)]]])))
 
 
 (defn main-panel []
@@ -173,3 +193,23 @@
   ())
 
 
+; work out how to make the time-slider change the day/night viz
+(comment
+  (def time-t (atom nil))
+  (cljs-time/plus starting-date-time (cljs-time/hours (or @time-t 0)))
+
+  (cljs-time/to-long starting-date-time)
+  (js/Date.)
+
+  (inst/with-out-str starting-date-time)
+
+  (= (with-out-str (pr starting-date-time))
+    "#inst \"2017-01-01\"")
+
+  (coerce/to-date starting-date-time)
+
+  (coerce/to-date
+    (cljs-time/plus starting-date-time
+      (cljs-time/hours (or @time-t 0))))
+
+  ())

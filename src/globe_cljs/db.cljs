@@ -6,12 +6,12 @@
             [globe-cljs.sensor-data :as sd]))
 
 
-(def globe-config
+(defn globe-config [globe-id]
   {:projection       "3D"
-   :base-layers      {"Blue Marble" (blue-marble/blue-marble "Blue Marble")
-                      "Compass"     (compass/compass "Compass")
-                      "Star Field"  (star-field/star-field "Star Field")
-                      "Night"       (night/night "Night")}
+   :base-layers      {(str globe-id " Blue Marble") (blue-marble/blue-marble (str globe-id " Blue Marble"))
+                      (str globe-id " Compass")     (compass/compass (str globe-id " Compass"))
+                      (str globe-id " Star Field")  (star-field/star-field (str globe-id " Star Field"))
+                      (str globe-id " Night")       (night/night (str globe-id " Night"))}
    :selected-sensors #{}
    :layers           {}
    :time             0})

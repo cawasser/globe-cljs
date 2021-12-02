@@ -19,7 +19,7 @@
   ::init-widget
   (fn-traced [db [_ id]]
     ;(log/info "init-widget" id)
-    (assoc-in db [:widgets id] db/globe-config)))
+    (assoc-in db [:widgets id] (db/globe-config id))))
 
 
 (re-frame/reg-event-db
