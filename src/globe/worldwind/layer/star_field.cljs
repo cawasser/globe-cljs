@@ -1,9 +1,10 @@
-(ns globe-cljs.worldwind.layer.compass
+(ns globe.worldwind.layer.star-field
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]))
 
 
-(defn compass [layer-name]
-  (let [layer (WorldWind/CompassLayer.)]
+(defn star-field [layer-name]
+  (let [layer (WorldWind/StarFieldLayer.)]
     (set! (.-displayName layer) layer-name)
     layer))
+

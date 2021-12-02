@@ -6,15 +6,11 @@
             [globe-cljs.subs :as subs]
 
             [globe-cljs.cell.util :as cell]
-            [globe-cljs.worldwind.defaults :as default]
-            [globe-cljs.worldwind.color :as color]
-            [globe-cljs.worldwind.location :as location]
-            [globe-cljs.worldwind.position :as position]
-            [globe-cljs.worldwind.geographic-text :as geo-text]
-            [globe-cljs.worldwind.text-attributes :as text-attr]
-            [globe-cljs.worldwind.layer.renderable :as rl]
-            [globe-cljs.worldwind.surface.polygon :as poly]))
-
+            [globe.worldwind.location :as location]
+            [globe.worldwind.position :as position]
+            [globe.worldwind.geographic-text :as geo-text]
+            [globe.worldwind.text-attributes :as text-attr]
+            [globe.worldwind.layer.renderable :as rl]))
 
 
 (defn- make-polygon [colors cell]
@@ -30,7 +26,6 @@
         layer-name (str cell-text "-" sensor)]
 
     ;(log/info "make-polygon" pos sensor color-name ww-color)
-
     {layer-name
      (rl/renderable-layer layer-name
        [(poly/polygon locations {:color ww-color})
@@ -52,9 +47,9 @@
 
 
 (comment
-  (def children [(poly/polygon [0 0] {:color [255 0 0 1]})
-                 (poly/polygon [0 1] {:color [0 255 0 1]})
-                 (poly/polygon [1 0] {:color [0 0 255 1]})])
+  (def children [(globe-cljsglobe.worldwind.surface.polygon/polygon [0 0] {:color [255 0 0 1]})
+                 (globe-cljsglobe.worldwind.surface.polygon/polygon [0 1] {:color [0 255 0 1]})
+                 (globe-cljsglobe.worldwind.surface.polygon/polygon [1 0] {:color [0 0 255 1]})])
 
   @(re-frame/subscribe [::subs/current-cells])
   @(re-frame/subscribe [::subs/current-cells])
@@ -65,7 +60,7 @@
 
   (merge {(str cell)
           (rl/createLayer (str cell)
-            [(poly/polygon cell {:color [128 128 0 0.3]})])}
+            [(globe-cljsglobe.worldwind.surface.polygon/polygon cell {:color [128 128 0 0.3]})])}
     (:layers @re-frame.db/app-db))
 
   ())

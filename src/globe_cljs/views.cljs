@@ -1,6 +1,5 @@
 (ns globe-cljs.views
   (:require
-    [reagent.core :as r]
     [re-frame.core :as re-frame]
     [globe-cljs.subs :as subs]
     [globe-cljs.events :as events]
@@ -8,8 +7,7 @@
 
     [cljs-time.core :as cljs-time]
     [cljs-time.coerce :as coerce]
-    [cljs-time.instant :as inst]
-    [globe-cljs.globe.globe :as g]))
+    [globe.globe :as g]))
 
 
 (def starting-date-time (cljs-time/date-time 2022 1 15 12 0 0 0))

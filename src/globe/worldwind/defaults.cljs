@@ -1,4 +1,4 @@
-(ns globe-cljs.worldwind.defaults
+(ns globe.worldwind.defaults
   (:require ["worldwindjs" :as WorldWind]))
 
 

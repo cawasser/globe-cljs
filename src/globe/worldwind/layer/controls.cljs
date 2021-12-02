@@ -1,4 +1,4 @@
-(ns globe-cljs.worldwind.layer.controls
+(ns globe.worldwind.layer.controls
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]))
 

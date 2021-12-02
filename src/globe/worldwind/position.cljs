@@ -1,8 +1,8 @@
-(ns globe-cljs.worldwind.position
+(ns globe.worldwind.position
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]
 
-            [globe-cljs.worldwind.defaults :as default]))
+            [globe.worldwind.defaults :as default]))
 
 
 (defn position

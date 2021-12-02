@@ -1,4 +1,4 @@
-(ns globe-cljs.worldwind.geographic-text
+(ns globe.worldwind.geographic-text
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]))
 

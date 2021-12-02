@@ -1,4 +1,4 @@
-(ns globe-cljs.globe.globe
+(ns globe.globe
   (:require ["worldwindjs" :as WorldWind]
             [reagent.core :as reagent]
             [reagent.dom :as rdom]
@@ -6,8 +6,8 @@
             [taoensso.timbre :as log]
             [clojure.set :as set]
 
-            [globe-cljs.worldwind.layer.layer :as l]
-            [globe-cljs.worldwind.layer.controls :as controls]))
+            [globe.worldwind.layer.layer :as l]
+            [globe.worldwind.layer.controls :as controls]))
 
 
 (def last-this (atom {}))

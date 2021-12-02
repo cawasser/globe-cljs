@@ -1,4 +1,4 @@
-(ns globe-cljs.worldwind.layer.day-only
+(ns globe.worldwind.layer.day-only
   (:require ["worldwindjs" :as WorldWind]
     [taoensso.timbre :as log]))
 

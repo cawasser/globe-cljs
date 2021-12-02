@@ -3,7 +3,6 @@
    [re-frame.core :as re-frame]
    [re-frame.db]
    [globe-cljs.db :as db]
-   [globe-cljs.subs :as subs]
    [day8.re-frame.tracing :refer-macros [fn-traced]]
    [taoensso.timbre :as log]))
 

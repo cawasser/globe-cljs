@@ -1,4 +1,4 @@
-(ns globe-cljs.worldwind.text-attributes
+(ns globe.worldwind.text-attributes
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]
 

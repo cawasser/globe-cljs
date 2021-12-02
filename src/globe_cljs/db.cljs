@@ -1,8 +1,8 @@
 (ns globe-cljs.db
-  (:require [globe-cljs.worldwind.layer.blue-marble :as blue-marble]
-            [globe-cljs.worldwind.layer.compass :as compass]
-            [globe-cljs.worldwind.layer.star-field :as star-field]
-            [globe-cljs.worldwind.layer.night :as night]
+  (:require [globe.worldwind.layer.blue-marble :as blue-marble]
+            [globe.worldwind.layer.compass :as compass]
+            [globe.worldwind.layer.star-field :as star-field]
+            [globe.worldwind.layer.night :as night]
             [globe-cljs.sensor-data :as sd]))
 
 

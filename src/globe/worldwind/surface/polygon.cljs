@@ -1,4 +1,4 @@
-(ns globe-cljs.worldwind.surface.polygon
+(ns globe.worldwind.surface.polygon
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]
 

@@ -4,7 +4,7 @@
     [re-frame.db :as rdb]
     [taoensso.timbre :as log]
 
-    [globe-cljs.worldwind.defaults :as defaults]))
+    [globe.worldwind.defaults :as defaults]))
 
 
 (re-frame/reg-sub
