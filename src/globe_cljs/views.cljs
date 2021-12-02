@@ -145,15 +145,15 @@
 ; try updating the app-db and seeing if the globe updates
 (comment
   (rf/dispatch-sync [:globe-cljs.events/add-base-layer "my-first-globe"
-                     "Compass" (globe-cljs.worldwind.layer.compass/compass "Compass")])
+                     "Compass" (globe.worldwind.layer.compass/compass "Compass")])
   (rf/dispatch-sync [:globe-cljs.events/remove-base-layer "my-first-globe" "Compass"])
 
   (rf/dispatch-sync [:globe-cljs.events/add-base-layer "my-first-globe"
-                     "Tesselation" (globe-cljs.worldwind.layer.tesselation/tesselation "Tesselation")])
+                     "Tesselation" (globe.worldwind.layer.tesselation/tesselation "Tesselation")])
   (rf/dispatch-sync [:globe-cljs.events/remove-base-layer "my-first-globe" "Tesselation"])
 
   (rf/dispatch-sync [:globe-cljs.events/add-base-layer "my-first-globe"
-                     "Blue Marble" (globe-cljs.worldwind.layer.blue-marble/blue-marble "Blue Marble")])
+                     "Blue Marble" (globe.worldwind.layer.blue-marble/blue-marble "Blue Marble")])
   (rf/dispatch-sync [:globe-cljs.events/remove-base-layer "my-first-globe" "Blue Marble"])
 
   ())

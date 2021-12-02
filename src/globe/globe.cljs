@@ -7,7 +7,8 @@
             [clojure.set :as set]
 
             [globe.worldwind.layer.layer :as l]
-            [globe.worldwind.layer.controls :as controls]))
+            [globe.worldwind.layer.controls :as controls]
+            [globe.worldwind.layer.coordinates :as coords]))
 
 
 (def last-this (atom {}))
@@ -137,7 +138,10 @@
           (l/addLayer this idx child))))
 
     ; add the controls layer
-    (l/addLayer this -1 ["Controls" (controls/controls this "Controls")])
+    (l/addLayer this -1 [(str canvasId " Controls") (controls/controls this (str canvasId " Controls"))])
+
+    ; add the coordinates layer
+    (l/addLayer this -1 [(str canvasId " Controls") (coords/coordinates this (str canvasId " Controls"))])
 
     (if (:time props)
       (do

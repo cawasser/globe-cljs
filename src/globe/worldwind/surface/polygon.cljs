@@ -2,7 +2,7 @@
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]
 
-            [globe-cljs.worldwind.shape-attributes :as shape-attributes]))
+            [globe.worldwind.shape-attributes :as shape-attributes]))
 
 
 (defn polygon [locations props]

@@ -10,7 +10,8 @@
             [globe.worldwind.position :as position]
             [globe.worldwind.geographic-text :as geo-text]
             [globe.worldwind.text-attributes :as text-attr]
-            [globe.worldwind.layer.renderable :as rl]))
+            [globe.worldwind.layer.renderable :as rl]
+            [globe.worldwind.surface.polygon :as poly]))
 
 
 (defn- make-polygon [colors cell]

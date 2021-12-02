@@ -2,7 +2,7 @@
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]
 
-            [globe-cljs.worldwind.defaults :as defaults]))
+            [globe.worldwind.defaults :as defaults]))
 
 
 (defn text-attributes

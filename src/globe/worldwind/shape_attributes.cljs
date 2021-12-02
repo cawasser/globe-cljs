@@ -2,8 +2,8 @@
   (:require ["worldwindjs" :as WorldWind]
             [taoensso.timbre :as log]
 
-            [globe-cljs.worldwind.defaults :as default]
-            [globe-cljs.worldwind.color :as color]))
+            [globe.worldwind.defaults :as default]
+            [globe.worldwind.color :as color]))
 
 
 (defn shape-attributes [{:keys [interior-color outline-width outline-color]}]

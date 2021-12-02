@@ -10,7 +10,7 @@
   (reset! last-this this)
 
   (let [layer (WorldWind/ViewControlsLayer. (.-wwd this))]
-    ;(set! (.-displayName layer) layer-name)
+    (set! (.-displayName layer) layer-name)
     ;(set! (.-placement layer) (WorldWind/Offset. WorldWind/OFFSET_PIXELS 11
     ;                            WorldWind/OFFSET_PIXELS 11))
     ;(set! (.-showPanControl this) false)
