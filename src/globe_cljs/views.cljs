@@ -157,9 +157,9 @@
 
 (defn- diagram []
   (reagent/with-let [elements (re-frame/subscribe [::subs/diagram-elements])]
-    [:div {:style {:width "50%" :height "500px"
-                   :padding      "20px" :border-width "3px"
-                   :border-style :solid :border-color :black}}
+    [:div#diagram {:style {:width "50%" :height "500px"
+                           :padding      "20px" :border-width "3px"
+                           :border-style :solid :border-color :black}}
      [flow/diagram elements]]))
 
 
@@ -262,4 +262,12 @@
   ())
 
 
-; play woth changing
+; lets get crazy with the nodes
+(comment
+  (re-frame/dispatch [::events/add-element {:id       "500"
+                                            :el-type  :node
+                                            :data     {:label (reagent/as-element [globe "globe-2"])}
+                                            :position {:x 300 :y 125}}])
+
+
+  ())
