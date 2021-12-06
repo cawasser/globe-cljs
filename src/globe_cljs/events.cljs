@@ -81,3 +81,11 @@
           the-fn (if (contains? current-set selection) disj conj)]
       (update-in db [:widgets globe-id :selected-sensors] the-fn selection))))
 
+
+(re-frame/reg-event-db
+  ::toggle-aoi
+
+  (fn-traced [db [_ globe-id selection]]
+    (let [current-set (get-in db [:widgets globe-id :selected-aois])
+          the-fn (if (contains? current-set selection) disj conj)]
+      (update-in db [:widgets globe-id :selected-aois] the-fn selection))))

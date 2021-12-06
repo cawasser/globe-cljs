@@ -32,6 +32,12 @@
 
 
 (re-frame/reg-sub
+  ::selected-aois
+  (fn [db [_ id]]
+    (or (get-in db [:widgets id :selected-aois]) #{})))
+
+
+(re-frame/reg-sub
   ::current-cells
 
   (fn [[_ id] _]
@@ -75,3 +81,8 @@
   ::sensor-allocations
   (fn [db _]
     (or (:sensor-allocations db) [])))
+
+(re-frame/reg-sub
+  ::aois
+  (fn [db _]
+    (or (:aois db) [])))

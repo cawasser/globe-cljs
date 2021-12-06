@@ -7,7 +7,10 @@
 
     [cljs-time.core :as cljs-time]
     [cljs-time.coerce :as coerce]
-    [globe.globe :as g]))
+    [globe.globe :as g]
+
+    ["@fortawesome/react-fontawesome" :refer (FontAwesomeIcon)]))
+    ;["@fortawesome/free-solid-svg-icons" :refer (faCoffee, faUmbrella)]))
 
 
 (def starting-date-time (cljs-time/date-time 2022 1 15 12 0 0 0))
@@ -41,9 +44,9 @@
 
 
 (defn- time-slider [id current-time-t]
-  [:div {:style {:display :flex
+  [:div {:style {:display     :flex
                  :align-items :center
-                 :width "50%"}}
+                 :width       "50%"}}
 
    [:div.slidecontainer
     [:input#myRange.slider
@@ -89,9 +92,31 @@
         [:label s]]))])
 
 
+(defn- aoi-visibility-control [globe-id aois selected-aois]
+
+  (log/info "aoi-visibility-control" @aois @selected-aois)
+
+  [:div {:style {:display        :flex
+                 :flex-direction :row}}
+   (doall
+     (for [[aoi attribs] @aois]
+       ^{:key aoi}
+       [:div {:style {:margin           "5px"
+                      :padding          "5px"}}
+        [:input {:type     "checkbox"
+                 :value    (contains? @selected-aois aoi)
+                 :on-click #(re-frame/dispatch-sync
+                              [::events/toggle-aoi globe-id aoi])}]
+        [:span.icon-text
+          [:span.icon [:> FontAwesomeIcon {:icon (first (:symbol attribs))}]]
+          [:span aoi]]]))])
+
+
 (defn- globe [globe-id]
   (let [sensors          (re-frame/subscribe [::subs/sensor-types])
         selected-sensors (re-frame/subscribe [::subs/selected-sensors])
+        aois             (re-frame/subscribe [::subs/aois])
+        selected-aois    (re-frame/subscribe [::subs/selected-aois])
         colors           (get-sensor-colors @sensors)
         base-layer       (re-frame/subscribe [::subs/base-layers globe-id])
         layers           (re-frame/subscribe [::subs/layers globe-id colors])
@@ -101,7 +126,7 @@
     (re-frame/dispatch-sync [::events/init-widget globe-id])
 
     (fn []
-      [:div {:style {:padding "20px" :border-width "3px"
+      [:div {:style {:padding      "20px" :border-width "3px"
                      :border-style :solid :border-color :black}}
        [:div
         [:h1 globe-id]
@@ -110,6 +135,7 @@
 
         [:div
          [sensor-visibility-control globe-id sensors selected-sensors colors]
+         [aoi-visibility-control globe-id aois selected-aois]
          [projection-control globe-id projection]]]
 
        [:div {:style {:width "50%"}}
@@ -119,15 +145,17 @@
                                   (cljs-time/hours (or @time-t 0))))
                   :projection (or @projection "3D")
                   :style      {:background-color :black
-                               :width "100%"
-                               :height "100%"}}
+                               :width            "100%"
+                               :height           "100%"}}
          (merge @base-layer @layers)]]])))
 
 
 (defn main-panel []
   [:div
-   [globe "globe-1"]
-   [globe "globe-2"]])
+   [:link {:rel "stylesheet" :href "/css/bulma.css"}]
+
+   [globe "globe-1"]])
+   ;[globe "globe-2"]])
 
 
 ; set up the colors for the sensors

@@ -13,11 +13,13 @@
                       (str globe-id " Star Field")  (star-field/star-field (str globe-id " Star Field"))
                       (str globe-id " Night")       (night/night (str globe-id " Night"))}
    :selected-sensors #{}
+   :selected-aois    #{}
    :layers           {}
    :time             0})
 
 
 (def default-db
   {:name               "re-frame"
-   :sensor-allocations sd/all-sensor-data})
+   :sensor-allocations sd/all-sensor-data
+   :aois               sd/all-aoi-data})
 
