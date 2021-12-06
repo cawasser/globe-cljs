@@ -5,7 +5,13 @@
             [globe-cljs.sensor-data :as sd]
 
             [re-frame.core :as re-frame]
-            [globe-cljs.events :as events]))
+            [globe-cljs.events :as events]
+
+            [globe.globe :as globe]))
+
+
+(defn- globe-node [data]
+  (reagent/as-element [:div [:p (str (js->clj data))]]))
 
 
 (defn- animated-or-not-popover [is-active source target]
@@ -26,13 +32,12 @@
                                              (reset! is-active false))}
         "Yes"]
        [:button.button {:on-click #(do
-                                     (re-frame/dispatch [::events/add-element {:id       (str @source "-" @target)
-                                                                               :el-type  :edge
-                                                                               :source   @source
-                                                                               :target   @target}])
+                                     (re-frame/dispatch [::events/add-element {:id      (str @source "-" @target)
+                                                                               :el-type :edge
+                                                                               :source  @source
+                                                                               :target  @target}])
                                      (reset! is-active false))}
         "No"]]]]))
-
 
 
 (defn- onConnect [is-active source target params]
@@ -55,6 +60,7 @@
      [animated-or-not-popover is-active source target]
 
      [:> ReactFlow {:elements  @elements
+                    :nodeTypes (clj->js {:globe globe-node})
                     :onConnect (partial onConnect is-active source target)}]]))
 
 
@@ -73,6 +79,14 @@
                                                :el-type  :node
                                                :data     {:label "My label has changed!!!"}
                                                :position {:x 300 :y 125}}])
+
+
+  (re-frame/dispatch [::events/update-element {:id       "5100"
+                                               :type     "globe"
+                                               :el-type  :node
+                                               :data     {:label "My label has changed!!!"}
+                                               :position {:x 300 :y 125}}])
+
 
   (re-frame/dispatch [::events/remove-element "5"])
 
