@@ -77,7 +77,7 @@
 
   (if-let [layer (or (l/getLayer this (str globe-id " Night")) (l/getLayer this (str globe-id " Day-only")))]
     (do
-      (log/info "change-time" (.-displayName layer) new-time)
+      ;(log/info "change-time" (.-displayName layer) new-time)
       (set! (.-time layer) new-time)
       (.redraw (.-wwd this)))))
 
@@ -90,18 +90,21 @@
 
     ; remove old stuff
     (if removed
-      (doall
-        ;(log/info "removing" removed)
-        (map #(l/removeLayer this %) removed)))
+      (do
+        ;(log/info "component-did-update removing" removed)
+        (doall (map #(l/removeLayer this %) removed))
+        (.redraw (.-wwd this))))
 
     ; add new stuff
     (if added
-      (doall
-        ;(log/info "adding" added)
-        (for [[idx child] (map-indexed vector added)]
-          (do
-            ;(log/info "adding" idx child)
-            (l/addLayer this idx [child (get new-children child)])))))))
+      (do
+        ;(log/info "component-did-update adding" added)
+        (doall
+          (for [[idx child] (map-indexed vector added)]
+            (do
+              ;(log/info "adding" idx child)
+              (l/addLayer this idx [child (get new-children child)]))))
+        (.redraw (.-wwd this))))))
 
 
 (defn- component-did-mount [dom-node state this]
@@ -116,7 +119,9 @@
   (let [canvasId (.-id @dom-node)
         props    (reagent/props this)]
 
-    (log/info "component-did-mount" (.-id @dom-node) (reagent/props this))
+    ;(log/info "component-did-mount" (.-id @dom-node)
+    ;  "//// props" (reagent/props this)
+    ;  "//// children" (reagent/children this))
 
     ;Create the WorldWindow using the ID of the canvas
     (set! (.-wwd this) (WorldWind/WorldWindow. canvasId))
@@ -141,12 +146,14 @@
     (l/addLayer this -1 [(str canvasId " Controls") (controls/controls this (str canvasId " Controls"))])
 
     ; add the coordinates layer
-    (l/addLayer this -1 [(str canvasId " Controls") (coords/coordinates this (str canvasId " Controls"))])
+    (l/addLayer this -1 [(str canvasId " Coordinates") (coords/coordinates this (str canvasId " Coordinates"))])
 
     (if (:time props)
       (do
         ;(log/info "set-time" canvasId (:time props))
         (change-time this (:id @state) (:time props))))
+
+    ;(log/info "component-did-mount" (sort (map #(.-displayName %) (.-layers (.-wwd this)))))
 
     (.redraw (.-wwd this))))
 
@@ -155,10 +162,13 @@
   (let [[_ new-props new-children] (reagent/argv this)
         [old-id old-props old-children] old-argv]
 
-    ;(log/info "component-did-update old-children" old-children
-    ;  "//// old-props" old-props
-    ;  "//// new-children" new-children
-    ;  "//// new-props" new-props)
+    (reset! last-this this)
+
+    ;(log/info "component-did-update"
+    ;  "old-children" (sort (keys old-children))
+      ;"//// old-props" old-props
+      ;"//// new-children" (sort (keys new-children)))
+      ;"//// new-props" new-props)
 
     ;(log/info "projection"
     ;  (:projection old-props)
@@ -174,8 +184,16 @@
 
     (update-children this new-children old-children)
 
+    ;(log/info "component-did-update" (sort (map #(.-displayName %) (.-layers (.-wwd this)))))
+
     (.redraw (.-wwd this))))
 
+
+(comment
+  (sort (map #(.-displayName %) (.-layers (.-wwd @last-this))))
+
+
+  ())
 
 (defn globe [props & children]
   ;(log/info "globe" props children)
@@ -211,6 +229,10 @@
 
            [:canvas (merge props {:id (:canvasId @state)})
             "Your browser does not support HTML5 Canvas."]))})))
+
+
+
+
 
 ; can we get the local data from the [:widgets id] subtree in app-db?
 (comment

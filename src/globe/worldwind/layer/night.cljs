@@ -6,6 +6,6 @@
 (defn night [layer-name]
   (let [layer (WorldWind/AtmosphereLayer.)]
     (set! (.-displayName layer) layer-name)
-    (set! (.-opacity layer) 0.7)
+    (set! (.-opacity layer) 0.9)
     (set! (.-nightEnabled layer) true)
     layer))

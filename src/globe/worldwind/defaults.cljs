@@ -10,6 +10,8 @@
 (def outline-color [128 128 128 1.0])
 
 (def text-color (.-WHITE WorldWind/Color))
+(def scale 1.5)
+(def offset [0 0])
 
 (def altitude 100)
 

@@ -8,6 +8,7 @@
     (set! (.-displayName layer) layer-name)
     (doall
       (map (fn [child]
+             ;(log/info "renderable-layer adding" layer-name child)
              (.addRenderable layer child))
         children))
     layer))
