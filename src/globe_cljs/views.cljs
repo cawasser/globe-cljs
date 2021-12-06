@@ -238,3 +238,10 @@
       (cljs-time/hours (or @time-t 0))))
 
   ())
+
+
+; can we do (consistent) renderables with surface-image?
+(comment
+
+
+  ())
