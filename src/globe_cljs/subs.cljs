@@ -82,7 +82,14 @@
   (fn [db _]
     (or (:sensor-allocations db) [])))
 
+
 (re-frame/reg-sub
   ::aois
   (fn [db _]
     (or (:aois db) [])))
+
+
+(re-frame/reg-sub
+  ::diagram-elements
+  (fn [db _]
+    (or (:diagram-elements db) [])))

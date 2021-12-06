@@ -1,16 +1,21 @@
 (ns globe-cljs.views
   (:require
+    [reagent.core :as reagent]
     [re-frame.core :as re-frame]
     [globe-cljs.subs :as subs]
     [globe-cljs.events :as events]
     [taoensso.timbre :as log]
 
+    [globe-cljs.sensor-data :as sd]
+
     [cljs-time.core :as cljs-time]
     [cljs-time.coerce :as coerce]
     [globe.globe :as g]
 
+    [diagram.flow :as flow]
+    [diagram.storm :as storm]
+
     ["@fortawesome/react-fontawesome" :refer (FontAwesomeIcon)]))
-    ;["@fortawesome/free-solid-svg-icons" :refer (faCoffee, faUmbrella)]))
 
 
 (def starting-date-time (cljs-time/date-time 2022 1 15 12 0 0 0))
@@ -150,11 +155,21 @@
          (merge @base-layer @layers)]]])))
 
 
+(defn- diagram []
+  (reagent/with-let [elements (re-frame/subscribe [::subs/diagram-elements])]
+    [:div {:style {:width "50%" :height "500px"
+                   :padding      "20px" :border-width "3px"
+                   :border-style :solid :border-color :black}}
+     [flow/diagram elements]]))
+
+
 (defn main-panel []
   [:div
    [:link {:rel "stylesheet" :href "/css/bulma.css"}]
 
-   [globe "globe-1"]])
+   [globe "globe-1"]
+
+   [diagram]])
    ;[globe "globe-2"]])
 
 
@@ -245,3 +260,6 @@
 
 
   ())
+
+
+; play woth changing

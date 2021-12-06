@@ -89,3 +89,49 @@
     (let [current-set (get-in db [:widgets globe-id :selected-aois])
           the-fn (if (contains? current-set selection) disj conj)]
       (update-in db [:widgets globe-id :selected-aois] the-fn selection))))
+
+
+(re-frame/reg-event-db
+  ::add-element
+
+  (fn-traced [db [_ new-element]]
+    (update db :diagram-elements conj new-element)))
+
+
+(re-frame/reg-event-db
+  ::remove-element
+
+  (fn-traced [db [_ element-id]]
+    (let [current (:diagram-elements db)]
+      (assoc db :diagram-elements (remove (fn [x]
+                                            (= (:id x) element-id))
+                                    current)))))
+
+
+(re-frame/reg-event-db
+  ::update-element
+
+  (fn-traced [db [_ {:keys [id] :as element}]]
+    (let [current (:diagram-elements db)]
+      (-> db
+        (assoc :diagram-elements (remove (fn [x]
+                                           (= (:id x) id))
+                                   current))
+        (update :diagram-elements conj element)))))
+
+
+; removing an element from a vector with a given "map key"
+(comment
+
+  (def current {:diagram-elements [{:id :a} {:id :b} {:id :c}]
+                :dummy "this should stay"})
+  (def element-id :b)
+
+  (update current :diagram-elements remove (fn [x] (= (:id x) element-id)))
+
+  (assoc current :diagram-elements (remove (fn [x]
+                                             (= (:id x) element-id))
+                                     (:diagram-elements current)))
+
+  ())
+

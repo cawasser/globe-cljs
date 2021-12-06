@@ -21,5 +21,6 @@
 (def default-db
   {:name               "re-frame"
    :sensor-allocations sd/all-sensor-data
-   :aois               sd/all-aoi-data})
+   :aois               sd/all-aoi-data
+   :diagram-elements   sd/flow-elements})
 
