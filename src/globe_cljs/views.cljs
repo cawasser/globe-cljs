@@ -58,7 +58,6 @@
                  (cljs-time/hours (or @current-time-t 0)))))]])
 
 
-
 (defn- projection-control [globe-id projections]
   [:div
    [:label {:for "projections"} "Projection:"]
