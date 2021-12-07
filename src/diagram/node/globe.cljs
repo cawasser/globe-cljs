@@ -9,32 +9,32 @@
             [cljs-time.coerce :as coerce]
 
             [globe-cljs.subs :as subs]
-            [globe-cljs.events :as events]))
+            [globe-cljs.events :as events]
 
+            ["react-flow-renderer" :refer (Handle)]))
 
-
-(comment
-
-
-  ())
 
 (defn globe-node [data]
-  (let [d          (js->clj data)
-        sensor     (get-in d ["data" "sensor"])
-        globe-id   (str "globe-" sensor)
-        sensors    (re-frame/subscribe [::subs/sensor-types])
-        colors     (ls/get-sensor-colors @sensors)
-        base-layer (re-frame/subscribe [::subs/base-layers globe-id])
-        projection (re-frame/subscribe [::subs/projection globe-id])
-        layers     (re-frame/subscribe [::subs/layers globe-id colors])
-        time-t     (re-frame/subscribe [::subs/time globe-id])]
+  (let [d             (js->clj data)
+        sensor        (get-in d ["data" "sensor"])
+        globe-id      (str "globe-" sensor)
+        sensors       (re-frame/subscribe [::subs/sensor-types])
+        colors        (ls/get-sensor-colors @sensors)
+        base-layer    (re-frame/subscribe [::subs/base-layers globe-id])
+        projection    (re-frame/subscribe [::subs/projection globe-id])
+        sensor-layers (re-frame/subscribe [::subs/sensor-layers globe-id colors])
+        time-t        (re-frame/subscribe [::subs/time globe-id])]
 
     (re-frame/dispatch-sync [::events/init-widget globe-id :min])
     (re-frame/dispatch-sync [::events/toggle-sensor globe-id sensor])
 
     (reagent/as-element
-      [:div {:style {:width  "200px" :height "200px"
+      [:div {:style {:width  "150px" :height "150px"
                      :border "solid 1px"}}
+
+       [:> Handle {:id (str globe-id "-out") :type "source" :position "right"
+                   :style {:borderRadius "true 0 true true"}}]
+
        [globe/globe {:id         globe-id
                      :time       (coerce/to-date
                                    (cljs-time/plus ls/starting-date-time
@@ -43,4 +43,4 @@
                      :style      {:background-color :black
                                   :width            "100%"
                                   :height           "100%"}}
-        (merge @base-layer @layers)]])))                 ;[:p sensor]])))
+        (merge @base-layer @sensor-layers)]])))             ;[:p sensor]])))

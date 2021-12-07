@@ -2,7 +2,7 @@
   (:require [taoensso.timbre :as log]
             [reagent.core :as reagent]
             [re-frame.core :as re-frame]
-            ["react-flow-renderer" :default ReactFlow]
+            ["react-flow-renderer" :refer (MiniMap Controls) :default ReactFlow]
 
             [globe-cljs.events :as events]
             [diagram.node.globe :as globe]))
@@ -45,17 +45,23 @@
     (reset! is-active true)))
 
 
-(defn diagram [elements]
+(defn diagram [elements node-types edge-types]
   (let [is-active (reagent/atom false)
         source    (reagent/atom "")
         target    (reagent/atom "")]
+
+    ;(log/info "diagram" @elements node-types)
+
     [:div {:style {:width "100%" :height "100%"}}
 
      [animated-or-not-popover is-active source target]
 
      [:> ReactFlow {:elements  @elements
-                    :nodeTypes (clj->js {"globe" globe/globe-node})
-                    :onConnect (partial onConnect is-active source target)}]]))
+                    :nodeTypes (clj->js node-types)
+                    :edgeTypes (clj->js edge-types)
+                    :onConnect (partial onConnect is-active source target)}
+      [:> MiniMap]
+      [:> Controls]]]))
 
 
 

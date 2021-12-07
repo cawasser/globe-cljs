@@ -6,15 +6,25 @@
     [globe-cljs.subs :as subs]
     [taoensso.timbre :as log]
 
-    [diagram.flow :as flow]))
+    [diagram.flow :as flow]
+    [diagram.node.globe :as globe]
+    [diagram.node.platform :as platform]
+    [diagram.node.downlink-terminal :as downlink-terminal]
+    [diagram.node.processing-center :as processing-center]))
 
 
 (defn diagram []
   (reagent/with-let [elements (re-frame/subscribe [::subs/diagram-elements])]
+
     [:div#diagram {:style {:width        "50%" :height "500px"
                            :padding      "20px" :border-width "3px"
                            :border-style :solid :border-color :black}}
-     [flow/diagram elements]]))
+     [flow/diagram elements
+      {"globe" globe/globe-node
+       "platform" platform/platform
+       "downlink-terminal" downlink-terminal/downlink-terminal
+       "processing-center" processing-center/processing-center}
+      {}]]))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

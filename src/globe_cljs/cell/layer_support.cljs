@@ -130,7 +130,7 @@
 
   @(re-frame/subscribe [::subs/current-cells])
   @(re-frame/subscribe [::subs/current-cells])
-  @(re-frame/subscribe [::subs/layers])
+  @(re-frame/subscribe [::subs/sensor-layers])
 
 
   (def cell @(re-frame/subscribe [::subs/current-cells]))
