@@ -61,14 +61,14 @@
         [:input {:type     "checkbox"
                  :value    s
                  :checked  (contains? @selected-sensors s)
-                 :on-click #(re-frame/dispatch-sync
-                              [::events/toggle-sensor globe-id s])}]
+                 :on-click #(do
+                              ;(log/info "toggle sensor" @selected-sensors s (contains? @selected-sensors s))
+                              (re-frame/dispatch-sync
+                                [::events/toggle-sensor globe-id s]))}]
         [:label s]]))])
 
 
 (defn- aoi-visibility-control [globe-id aois selected-aois]
-
-  (log/info "aoi-visibility-control" @aois @selected-aois)
 
   [:div {:style {:display        :flex
                  :flex-direction :row}}
@@ -78,9 +78,12 @@
        [:div {:style {:margin  "5px"
                       :padding "5px"}}
         [:input {:type     "checkbox"
-                 :value    (contains? @selected-aois aoi)
-                 :on-click #(re-frame/dispatch-sync
-                              [::events/toggle-aoi globe-id aoi])}]
+                 :value    aoi
+                 :checked  (contains? @selected-aois aoi)
+                 :on-click #(do
+                              ;(log/info "toggle aoi" @selected-aois aoi (contains? @selected-aois aoi))
+                              (re-frame/dispatch-sync
+                                [::events/toggle-aoi globe-id aoi]))}]
         [:span.icon-text
          [:span.icon [:> FontAwesomeIcon {:icon (first (:symbol attribs))}]]
          [:span aoi]]]))])
@@ -90,10 +93,11 @@
   (let [sensors          (re-frame/subscribe [::subs/sensor-types])
         selected-sensors (re-frame/subscribe [::subs/selected-sensors globe-id])
         aois             (re-frame/subscribe [::subs/aois])
-        selected-aois    (re-frame/subscribe [::subs/selected-aois])
+        selected-aois    (re-frame/subscribe [::subs/selected-aois globe-id])
         colors           (ls/get-sensor-colors @sensors)
         base-layer       (re-frame/subscribe [::subs/base-layers globe-id])
-        layers           (re-frame/subscribe [::subs/layers globe-id colors])
+        sensor-layers    (re-frame/subscribe [::subs/sensor-layers globe-id colors])
+        aoi-layers       (re-frame/subscribe [::subs/aoi-layers globe-id])
         projection       (re-frame/subscribe [::subs/projection globe-id])
         time-t           (re-frame/subscribe [::subs/time globe-id])]
 
@@ -122,7 +126,7 @@
                   :style      {:background-color :black
                                :width            "100%"
                                :height           "100%"}}
-         (merge @base-layer @layers)]]])))
+         (merge @base-layer @aoi-layers @sensor-layers)]]])))
 
 
 
@@ -141,6 +145,7 @@
   (map (fn [s] (contains? @selected-sensors s)) @sensors)
 
   ())
+
 
 ; set up the colors for the sensors
 (comment

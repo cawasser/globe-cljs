@@ -11,10 +11,12 @@
             [globe-cljs.cell.util :as cell]
             [globe.worldwind.location :as location]
             [globe.worldwind.position :as position]
+            [globe.worldwind.sector :as sector]
             [globe.worldwind.geographic-text :as geo-text]
             [globe.worldwind.text-attributes :as text-attr]
             [globe.worldwind.layer.renderable :as rl]
-            [globe.worldwind.surface.polygon :as poly]))
+            [globe.worldwind.surface.polygon :as poly]
+            [globe.worldwind.surface.image :as image]))
 
 
 (def sensor-color-pallet [[:green "rgba(0, 128, 0, .3)" [0.0 0.5 0.0 0.3]] ; "abi-3"
@@ -47,6 +49,16 @@
     []))
 
 
+(defn convert-cell-to-sector [cell]
+  (let [[lat lon] (get cell/cell-centers cell)]
+    [(- lat 2) (+ lat 2) (- lon 4) (+ lon 4)]))
+
+
+(defn make-sector [cell]
+  (let [[minLat maxLat minLon maxLon] (convert-cell-to-sector cell)]
+    (sector/sector minLat maxLat minLon maxLon)))
+
+
 (defn- make-polygon [colors cell]
   (let [[pos sensor] (first cell)
         cell-text (str pos)
@@ -66,20 +78,51 @@
         ;(geo-text/geographic-text center sensor
         ;  (text-attr/text-attributes))])}))
 
+(defn- make-image [[row col symbol]]
+  (let [pos [row col]
+        center (position/position (get cell/cell-centers pos))
+        sector (make-sector pos)
+        layer-name (str row "-" col "-" symbol)]
+
+    (log/info "make-image" row col symbol)
+
+    {layer-name
+     (rl/renderable-layer layer-name
+       [
+        (image/image sector symbol)])}))
+        ;(geo-text/geographic-text center (str aoi) (text-attr/text-attributes))])}))
+
 
 (re-frame/reg-sub
-  ::subs/layers
+  ::subs/sensor-layers
 
   (fn [[_ id _] _]
-    (re-frame/subscribe [::subs/current-cells id]))
+    (re-frame/subscribe [::subs/current-sensor-cells id]))
 
   (fn [cells [_ id colors]]
     (->> cells
       (map #(make-polygon colors %))
-      (into {})
-      (merge (get-in @rdb/app-db [:widgets id :layers])))))
+      (into {}))))
 
 
+(re-frame/reg-sub
+  ::subs/aoi-layers
+
+  (fn [[_ id _] _]
+    (re-frame/subscribe [::subs/current-aoi-cells id]))
+
+  (fn [cells [_ id]]
+    (->> cells
+      (map #(make-image %))
+      (into {}))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; RICH COMMENTS
+;
+
+; work out generating layers from subscription/signal graph
 (comment
   (def children [(globe-cljsglobe.worldwind.surface.polygon/polygon [0 0] {:color [255 0 0 1]})
                  (globe-cljsglobe.worldwind.surface.polygon/polygon [0 1] {:color [0 255 0 1]})
