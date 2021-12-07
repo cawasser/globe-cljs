@@ -17,8 +17,11 @@
 (re-frame/reg-event-db
   ::init-widget
   (fn-traced [db [_ id min-max]]
-    (log/info "init-widget" id min-max)
-    (assoc-in db [:widgets id] (db/globe-config id min-max))))
+    (if-let [_ (get-in db [:widgets id])]
+      db ; do nothing - we are already initialized
+      (do
+        (log/info "init-widget" id min-max)
+        (assoc-in db [:widgets id] (db/globe-config id min-max))))))
 
 
 (re-frame/reg-event-db

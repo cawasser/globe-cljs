@@ -1,12 +1,10 @@
 (ns diagram.flow
   (:require [taoensso.timbre :as log]
             [reagent.core :as reagent]
-            ["react-flow-renderer" :default ReactFlow]
-            [globe-cljs.sensor-data :as sd]
-
             [re-frame.core :as re-frame]
-            [globe-cljs.events :as events]
+            ["react-flow-renderer" :default ReactFlow]
 
+            [globe-cljs.events :as events]
             [diagram.node.globe :as globe]))
 
 
@@ -61,56 +59,3 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;
-; RICH COMMENTS
-
-; play with changing the elements in the diagram
-(comment
-  (re-frame/dispatch [::events/add-element {:id       "5"
-                                            :el-type  :node
-                                            :data     {:label "A new node!"}
-                                            :position {:x 300 :y 125}}])
-
-  (re-frame/dispatch [::events/update-element {:id       "5"
-                                               :el-type  :node
-                                               :data     {:label "My label has changed!!!"}
-                                               :position {:x 300 :y 125}}])
-
-
-  (re-frame/dispatch [::events/update-element {:id       "5100"
-                                               :type     "globe"
-                                               :draggable false
-                                               :el-type  :node
-                                               :data     {:sensor "viirs-5"}
-                                               :position {:x 450 :y 125}}])
-  (re-frame/dispatch [::events/update-element {:id       "5200"
-                                               :type     "globe"
-                                               :draggable false
-                                               :el-type  :node
-                                               :data     {:sensor "avhhr-6"}
-                                               :position {:x 450 :y 350}}])
-  (re-frame/dispatch [::events/update-element {:id        "5300"
-                                               :type      "globe"
-                                               :draggable false
-                                               :el-type   :node
-                                               :data      {:sensor "abi-meso-4"}
-                                               :position  {:x 675 :y 125}}])
-  (re-frame/dispatch [::events/update-element {:id        "5400"
-                                               :type      "globe"
-                                               :draggable false
-                                               :el-type   :node
-                                               :data      {:sensor "abi-meso-11"}
-                                               :position  {:x 675 :y 350}}])
-
-
-  (re-frame/dispatch [::events/remove-element "5"])
-  (re-frame/dispatch [::events/remove-element "5100"])
-  (re-frame/dispatch [::events/remove-element "5200"])
-  (re-frame/dispatch [::events/remove-element "5300"])
-  (re-frame/dispatch [::events/remove-element "5400"])
-
-
-  ()
-
-
-  ())

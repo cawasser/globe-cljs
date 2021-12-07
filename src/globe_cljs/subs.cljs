@@ -54,10 +54,10 @@
                                  {cell (:sensor c)})))
                      (filter #(contains? selected-sensors (first (vals %)))))]
       (do
-        (log/info "::current-cells" cells)
+        ;(log/info "::current-cells" cells)
         cells)
       (do
-        (log/info "::current-cells returning []")
+        ;(log/info "::current-cells returning []")
         []))))
 
 
