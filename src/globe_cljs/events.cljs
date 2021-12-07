@@ -16,9 +16,9 @@
 
 (re-frame/reg-event-db
   ::init-widget
-  (fn-traced [db [_ id]]
-    ;(log/info "init-widget" id)
-    (assoc-in db [:widgets id] (db/globe-config id))))
+  (fn-traced [db [_ id min-max]]
+    (log/info "init-widget" id min-max)
+    (assoc-in db [:widgets id] (db/globe-config id min-max))))
 
 
 (re-frame/reg-event-db

@@ -6,12 +6,14 @@
             [globe-cljs.sensor-data :as sd]))
 
 
-(defn globe-config [globe-id]
+(defn globe-config [globe-id min-max]
   {:projection       "3D"
-   :base-layers      {(str globe-id " Blue Marble") (blue-marble/blue-marble (str globe-id " Blue Marble"))
-                      (str globe-id " Compass")     (compass/compass (str globe-id " Compass"))
-                      (str globe-id " Star Field")  (star-field/star-field (str globe-id " Star Field"))
-                      (str globe-id " Night")       (night/night (str globe-id " Night"))}
+   :base-layers      (merge {(str globe-id " Blue Marble") (blue-marble/blue-marble (str globe-id " Blue Marble"))
+                             (str globe-id " Star Field")  (star-field/star-field (str globe-id " Star Field"))
+                             (str globe-id " Night")       (night/night (str globe-id " Night"))}
+                       (if (= :min min-max)
+                         {}
+                         {(str globe-id " Compass")  (star-field/star-field (str globe-id " Compass"))}))
    :selected-sensors #{}
    :selected-aois    #{}
    :layers           {}
@@ -23,4 +25,13 @@
    :sensor-allocations sd/all-sensor-data
    :aois               sd/all-aoi-data
    :diagram-elements   sd/flow-elements})
+
+
+
+(comment
+  (globe-config "dummy" :min)
+  (globe-config "dummy" :max)
+
+  ())
+
 

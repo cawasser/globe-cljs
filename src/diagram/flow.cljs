@@ -7,11 +7,7 @@
             [re-frame.core :as re-frame]
             [globe-cljs.events :as events]
 
-            [globe.globe :as globe]))
-
-
-(defn- globe-node [data]
-  (reagent/as-element [:div [:p (str (js->clj data))]]))
+            [diagram.node.globe :as globe]))
 
 
 (defn- animated-or-not-popover [is-active source target]
@@ -60,7 +56,7 @@
      [animated-or-not-popover is-active source target]
 
      [:> ReactFlow {:elements  @elements
-                    :nodeTypes (clj->js {:globe globe-node})
+                    :nodeTypes (clj->js {"globe" globe/globe-node})
                     :onConnect (partial onConnect is-active source target)}]]))
 
 
@@ -84,11 +80,26 @@
   (re-frame/dispatch [::events/update-element {:id       "5100"
                                                :type     "globe"
                                                :el-type  :node
-                                               :data     {:label "My label has changed!!!"}
+                                               :data     {:sensor "viirs-5"}
                                                :position {:x 300 :y 125}}])
+
+  (re-frame/dispatch [::events/update-element {:id       "5200"
+                                               :type     "globe"
+                                               :el-type  :node
+                                               :data     {:sensor "avhhr-6"}
+                                               :position {:x 300 :y 275}}])
+
+  (re-frame/dispatch [::events/update-element {:id       "5300"
+                                               :type     "globe"
+                                               :el-type  :node
+                                               :data     {:sensor "abi-meso-4"}
+                                               :position {:x 700 :y 125}}])
 
 
   (re-frame/dispatch [::events/remove-element "5"])
+  (re-frame/dispatch [::events/remove-element "5100"])
+  (re-frame/dispatch [::events/remove-element "5200"])
+  (re-frame/dispatch [::events/remove-element "5300"])
 
 
   ()

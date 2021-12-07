@@ -143,10 +143,12 @@
           (l/addLayer this idx child))))
 
     ; add the controls layer
-    (l/addLayer this -1 [(str canvasId " Controls") (controls/controls this (str canvasId " Controls"))])
+    (if (= :max (:min-max props))
+      (l/addLayer this -1 [(str canvasId " Controls") (controls/controls this (str canvasId " Controls"))]))
 
     ; add the coordinates layer
-    (l/addLayer this -1 [(str canvasId " Coordinates") (coords/coordinates this (str canvasId " Coordinates"))])
+    (if (= :max (:min-max props))
+      (l/addLayer this -1 [(str canvasId " Coordinates") (coords/coordinates this (str canvasId " Coordinates"))]))
 
     (if (:time props)
       (do
@@ -188,12 +190,6 @@
 
     (.redraw (.-wwd this))))
 
-
-(comment
-  (sort (map #(.-displayName %) (.-layers (.-wwd @last-this))))
-
-
-  ())
 
 (defn globe [props & children]
   ;(log/info "globe" props children)
