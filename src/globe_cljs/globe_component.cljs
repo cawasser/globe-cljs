@@ -59,7 +59,8 @@
                       :margin           "5px"
                       :padding          "5px"}}
         [:input {:type     "checkbox"
-                 :value    (contains? @selected-sensors s)
+                 :value    s
+                 :checked  (contains? @selected-sensors s)
                  :on-click #(re-frame/dispatch-sync
                               [::events/toggle-sensor globe-id s])}]
         [:label s]]))])
@@ -87,7 +88,7 @@
 
 (defn globe [globe-id]
   (let [sensors          (re-frame/subscribe [::subs/sensor-types])
-        selected-sensors (re-frame/subscribe [::subs/selected-sensors])
+        selected-sensors (re-frame/subscribe [::subs/selected-sensors globe-id])
         aois             (re-frame/subscribe [::subs/aois])
         selected-aois    (re-frame/subscribe [::subs/selected-aois])
         colors           (ls/get-sensor-colors @sensors)
@@ -128,6 +129,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; RICH COMMENTS
 ;
+
+
+; setup the sensor secetion contorls ot have the correct values
+(comment
+  (do
+    (def globe-id "globe-1")
+    (def sensors (re-frame/subscribe [::subs/sensor-types]))
+    (def selected-sensors (re-frame/subscribe [::subs/selected-sensors globe-id])))
+
+  (map (fn [s] (contains? @selected-sensors s)) @sensors)
+
+  ())
 
 ; set up the colors for the sensors
 (comment
