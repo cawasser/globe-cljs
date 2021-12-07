@@ -79,27 +79,35 @@
 
   (re-frame/dispatch [::events/update-element {:id       "5100"
                                                :type     "globe"
+                                               :draggable false
                                                :el-type  :node
                                                :data     {:sensor "viirs-5"}
-                                               :position {:x 300 :y 125}}])
-
+                                               :position {:x 450 :y 125}}])
   (re-frame/dispatch [::events/update-element {:id       "5200"
                                                :type     "globe"
+                                               :draggable false
                                                :el-type  :node
                                                :data     {:sensor "avhhr-6"}
-                                               :position {:x 300 :y 275}}])
-
-  (re-frame/dispatch [::events/update-element {:id       "5300"
-                                               :type     "globe"
-                                               :el-type  :node
-                                               :data     {:sensor "abi-meso-4"}
-                                               :position {:x 700 :y 125}}])
+                                               :position {:x 450 :y 350}}])
+  (re-frame/dispatch [::events/update-element {:id        "5300"
+                                               :type      "globe"
+                                               :draggable false
+                                               :el-type   :node
+                                               :data      {:sensor "abi-meso-4"}
+                                               :position  {:x 675 :y 125}}])
+  (re-frame/dispatch [::events/update-element {:id        "5400"
+                                               :type      "globe"
+                                               :draggable false
+                                               :el-type   :node
+                                               :data      {:sensor "abi-meso-11"}
+                                               :position  {:x 675 :y 350}}])
 
 
   (re-frame/dispatch [::events/remove-element "5"])
   (re-frame/dispatch [::events/remove-element "5100"])
   (re-frame/dispatch [::events/remove-element "5200"])
   (re-frame/dispatch [::events/remove-element "5300"])
+  (re-frame/dispatch [::events/remove-element "5400"])
 
 
   ()
