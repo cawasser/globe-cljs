@@ -41,6 +41,7 @@
                          :sensor-layers      sensor-layers}]]
         [:> FlippingCardBack {:style u/node-style-globe}
          [video/card {:style u/node-style-globe}
+          ;"https://www.youtube.com/watch?v=hcYeZMNAbNs"]]]
           "https://www.youtube.com/watch?v=vLgsf8Pei6Q"]]]
 
        [:> Handle {:id    (str globe-id "-out") :type "source" :position "right"
