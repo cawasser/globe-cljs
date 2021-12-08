@@ -29,18 +29,19 @@
     (re-frame/dispatch-sync [::events/toggle-sensor globe-id sensor])
 
     (reagent/as-element
-      [:div {:style {:width  "150px" :height "150px"
-                     :border "solid 1px"}}
+      [:div {:style {:width         "150px" :height "150px"
+                     :border-radius "50%"
+                     :border        "solid 1px"}}
 
-       [:> Handle {:id (str globe-id "-out") :type "source" :position "right"
+       [:> Handle {:id    (str globe-id "-out") :type "source" :position "right"
                    :style {:borderRadius "true 0 true true"}}]
 
        [globe/globe {:id         globe-id
+                     :min-max    :min
                      :time       (coerce/to-date
                                    (cljs-time/plus ls/starting-date-time
                                      (cljs-time/hours (or @time-t 0))))
                      :projection (or @projection "3D")
-                     :style      {:background-color :black
-                                  :width            "100%"
+                     :style      {:width            "100%"
                                   :height           "100%"}}
         (merge @base-layer @sensor-layers)]])))             ;[:p sensor]])))
