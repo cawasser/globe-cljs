@@ -16,7 +16,7 @@
 (defn diagram []
   (reagent/with-let [elements (re-frame/subscribe [::subs/diagram-elements])]
 
-    [:div#diagram-component {:style {:width        "90%" :height "750px"
+    [:div#diagram-component {:style {:width        "70%" :height "750px"
                                      :padding      "20px" :border-width "3px"
                                      :border-style :solid :border-color :black}}
      [flow/diagram elements

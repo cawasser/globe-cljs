@@ -11,6 +11,7 @@
             ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
 
             [diagram.card.globe :as globe]
+            [diagram.card.video :as video]
             [diagram.node.utils :as u]))
 
 
@@ -39,13 +40,8 @@
                          :base-layers        base-layers
                          :sensor-layers      sensor-layers}]]
         [:> FlippingCardBack {:style u/node-style-globe}
-         [:div {:style (merge u/node-style-globe
-                         {:background      u/default-background
-                          :display         :flex
-                          :flex-direction  :column
-                          :justify-content :center
-                          :align-items     :center})}
-          "The Back"]]]
+         [video/card {:style u/node-style-globe}
+          "https://www.youtube.com/watch?v=vLgsf8Pei6Q"]]]
 
        [:> Handle {:id    (str globe-id "-out") :type "source" :position "right"
                    :style {:borderRadius "true 0 true true"}}]])))

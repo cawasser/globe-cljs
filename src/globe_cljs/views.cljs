@@ -3,8 +3,11 @@
     [taoensso.timbre :as log]
 
     [globe-cljs.diagram-component :as d]
-    [globe-cljs.globe-component :as g]
-    [chart.pie-chart :as c]))
+    [globe-cljs.globe-component :as g]))
+
+    ;[chart.pie-chart :as c]
+    ;[diagram.node.utils :as u]
+    ;[diagram.card.video :as video]))
 
 
 (defn main-panel []
@@ -12,7 +15,6 @@
    [:link {:rel "stylesheet" :href "/css/bulma.css"}]
 
    [g/globe "globe-1"]
-   ;[c/pie-chart]
    [d/diagram]])
 
 
