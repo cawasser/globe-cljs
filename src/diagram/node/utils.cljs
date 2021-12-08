@@ -11,10 +11,12 @@
                        :color default-color})
 
 
-(def node-style-card {:width "250px" :height "350px"})
+(def node-style-card {:width "250px" :height "350px"
+                      :border "solid thin darkgray"
+                      :border-radius "0.25rem"})
 
 
-(def node-style-square {:width "250px" :height "350px"
+(def node-style-square {:width "100%" :height "100%"
                         :background default-background
                         :color default-color
 
