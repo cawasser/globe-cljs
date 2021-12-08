@@ -5,10 +5,6 @@
     [globe-cljs.diagram-component :as d]
     [globe-cljs.globe-component :as g]))
 
-    ;[chart.pie-chart :as c]
-    ;[diagram.node.utils :as u]
-    ;[diagram.card.video :as video]))
-
 
 (defn main-panel []
   [:div

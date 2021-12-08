@@ -15,8 +15,10 @@
             [globe.worldwind.geographic-text :as geo-text]
             [globe.worldwind.text-attributes :as text-attr]
             [globe.worldwind.layer.renderable :as rl]
+
             [globe.worldwind.surface.polygon :as poly]
-            [globe.worldwind.surface.image :as image]))
+            [globe.worldwind.surface.image :as image]
+            [globe.worldwind.surface.circle :as circle]))
 
 
 (def sensor-color-pallet [[:green "rgba(0, 128, 0, .3)" [0.0 0.5 0.0 0.3]] ; "abi-3"
@@ -69,28 +71,35 @@
                      (into-array))
         center (position/position (get cell/cell-centers pos))
         [color-name _ ww-color] (get colors sensor)
-        layer-name (str cell-text "-" sensor)]
+        layer-name (str sensor "-" cell-text)]
 
     ;(log/info "make-polygon" pos sensor color-name ww-color)
     {layer-name
      (rl/renderable-layer layer-name
        [(poly/polygon locations {:color ww-color})])}))
-        ;(geo-text/geographic-text center sensor
+        ;(geo-text/geographic-text center layer-name
         ;  (text-attr/text-attributes))])}))
 
-(defn- make-image [[row col symbol]]
-  (let [pos [row col]
-        center (position/position (get cell/cell-centers pos))
-        sector (make-sector pos)
-        layer-name (str row "-" col "-" symbol)]
 
-    (log/info "make-image" row col symbol)
+(defn- make-image [[aoi time-t pos symbol]]
+  (let [center (position/position (get cell/cell-centers pos))
+        boundaries (cell/cell-boundaries pos)
+        locations  (->> boundaries
+                     (map (fn [location]
+                            (location/location location)))
+                     (into-array))
+        sector (make-sector pos)
+        layer-name (str symbol "-" pos)]
+
+    (log/info "make-image" time-t pos aoi symbol)
 
     {layer-name
      (rl/renderable-layer layer-name
        [
-        (image/image sector symbol)])}))
-        ;(geo-text/geographic-text center (str aoi) (text-attr/text-attributes))])}))
+        ;(poly/polygon locations {:color [128 128 128 0.5]})])}))
+        (circle/circle center {:color [128 128 128 0.5]})
+        ;(image/image sector symbol)])}))
+        (geo-text/geographic-text center (str aoi) (text-attr/text-attributes))])}))
 
 
 (re-frame/reg-sub
@@ -143,19 +152,9 @@
   ())
 
 
-; how do we destructure the key and value of the cell data?
+; what are we getting from
 (comment
-  (def cell {[0 0] "sensor-1"})
-  (def cell-data [{[0 0] "sensor-1"}
-                  {[0 0] "sensor-2"}])
-
-  (let [[k v] (first cell)]
-    {:k k :v v})
-
-  (map (fn [c]
-         (let [[k v] (first c)]
-           {:k k :v v}))
-    cell-data)
-
+  (def id "globe-1")
+  @(re-frame/subscribe [::subs/current-aoi-cells id])
 
   ())

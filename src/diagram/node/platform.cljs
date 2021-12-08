@@ -20,7 +20,7 @@
       [:div#platform-card {:style u/node-style-card}
        [:> FlippingCard {:style {:margin 0}}
         [:> FlippingCardFront
-         [entity/card {} "/images/icons/Weather-Satellite-PNG-Clipart.png" label]]
+         [entity/card {}  "/images/icons/Weather-Satellite-PNG-Clipart.png" label]]
         [:> FlippingCardBack
          [chart/card {} [c/pie-chart]]]]
 
