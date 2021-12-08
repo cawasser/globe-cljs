@@ -986,6 +986,9 @@
                                               [5 4 "hidef-image" 1]
                                               [5 3 "hidef-image" 2]}}})
 
+(defn diagram-cell [x y]
+  {:x (+ 10 (* x 400)) :y (+ 10 (* y 400))})
+
 
 (def flow-elements [{:id         "viirs-5"
                      :el-type    :node
@@ -993,7 +996,7 @@
                      :data       {:sensor "viirs-5"}
                      ;:dragHandle "drag-handle"
                      :draggable false
-                     :position   {:x 0 :y 100}}
+                     :position   (diagram-cell 0 0)}
 
                     {:id         "goes-east"
                      :el-type    :node
@@ -1001,35 +1004,35 @@
                      :data       {:label "GOES East"}
                      ;:dragHandle "drag-handle"
                      :draggable false
-                     :position   {:x 200 :y 100}}
+                     :position   (diagram-cell 1 0)}
 
                     {:id       "central"
                      :el-type  :node
                      :type     "downlink-terminal"
                      :data     {:label "Central"}
                      :draggable false
-                     :position {:x 500 :y 100}}
+                     :position (diagram-cell 2 0)}
 
                     {:id       "washington"
                      :el-type  :node
                      :type     "processing-center"
                      :data     {:label "Washington"}
                      :draggable false
-                     :position {:x 750 :y 100}}
+                     :position (diagram-cell 3 0)}
 
                     {:id       "goes-west"
                      :el-type  :node
                      :type     "platform"
-                     :data     {:label "GOES West"}:draggable false
-
-                     :position {:x 200 :y 300}}
+                     :data     {:label "GOES West"}
+                     :draggable false
+                     :position (diagram-cell 1 1)}
 
                     {:id       "mountain"
                      :el-type  :node
                      :type     "downlink-terminal"
                      :data     {:label "Mountain"}
                      :draggable false
-                     :position {:x 500 :y 300}}
+                     :position (diagram-cell 2 1)}
 
                     ; edges
                     {:id "v5-e" :el-type :edge :source "viirs-5" :target "goes-east"

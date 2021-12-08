@@ -11,7 +11,8 @@
             [globe-cljs.subs :as subs]
             [globe-cljs.events :as events]
 
-            ["react-flow-renderer" :refer (Handle)]))
+            ["react-flow-renderer" :refer (Handle)]
+            [diagram.node.utils :as u]))
 
 
 (defn globe-node [data]
@@ -29,9 +30,7 @@
     (re-frame/dispatch-sync [::events/toggle-sensor globe-id sensor])
 
     (reagent/as-element
-      [:div {:style {:width         "150px" :height "150px"
-                     :border-radius "50%"
-                     :border        "solid 1px"}}
+      [:div {:style u/node-style-globe}
 
        [:> Handle {:id    (str globe-id "-out") :type "source" :position "right"
                    :style {:borderRadius "true 0 true true"}}]

@@ -17,7 +17,7 @@
 (defn diagram []
   (reagent/with-let [elements (re-frame/subscribe [::subs/diagram-elements])]
 
-    [:div#diagram {:style {:width        "50%" :height "500px"
+    [:div#diagram {:style {:width        "90%" :height "750px"
                            :padding      "20px" :border-width "3px"
                            :border-style :solid :border-color :black}}
      [flow/diagram elements
@@ -92,7 +92,7 @@
                                                ;:draggable false
                                                :type     "flipping-node"
                                                :data     {:label "My label has changed!!!"}
-                                               :position {:x 100 :y 525}}])
+                                               :position (sd/diagram-cell 0 2)}])
 
   (keys @re-frame.db/app-db)
   (keys (:widgets @re-frame.db/app-db))

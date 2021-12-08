@@ -1,17 +1,26 @@
 (ns diagram.node.utils)
 
 
+(def default-background "#9CA8B3")
+(def default-color "#FF")
+
+
 (def node-style-round {:width "350px" :height "350px"
-                       :background "#9CA8B3"
+                       :background default-background
                        :border-radius "50%"
-                       :color "#FFF"
-                       :padding 10})
+                       :color default-color})
 
 
-(def node-style-square {:width "350px" :height "350px"
-                        :background "#9CA8B3"
-                        :color "#FFF"
-                        :padding 10})
+(def node-style-card {:width "250px" :height "350px"})
+
+
+(def node-style-square {:width "250px" :height "350px"
+                        :background default-background
+                        :color default-color})
+
+
+(def node-style-globe {:width "350px" :height "350px"
+                       :border-radius "50%"})
 
 
 (def image-style {:width "200px" :height "200px"
