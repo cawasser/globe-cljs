@@ -3,11 +3,11 @@
             [reagent.core :as reagent]
 
             ["react-flow-renderer" :refer (Handle)]
-            ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
 
             [chart.line-chart :as c]
             [diagram.card.entity :as entity]
             [diagram.card.chart :as chart]
+            [diagram.card.flippable :as f]
 
             [diagram.node.utils :as u]))
 
@@ -19,11 +19,9 @@
 
     (reagent/as-element
       [:div#platform-card {:style (merge u/node-style-card {:margin 0})}
-       [:> FlippingCard {:style {:margin 0}}
-        [:> FlippingCardFront
-         [entity/card {} "/images/icons/downlink-terminal.png" label]]
-        [:> FlippingCardBack
-         [chart/card {} [c/line-chart]]]]
+       [f/flippable {}
+        [entity/card {} "/images/icons/downlink-terminal.png" label]
+        [chart/card {} [c/line-chart]]]
 
        [:> Handle {:id    (str id "-out") :type "source" :position "right"
                    :style u/handle-style}]

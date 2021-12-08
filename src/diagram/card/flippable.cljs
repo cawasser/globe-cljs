@@ -5,10 +5,9 @@
             ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]))
 
 
-(defn flippable [front back]
-  (reagent/as-element
-    [:> FlippingCard {:style {:margin 0}}
-     [:> FlippingCardFront
-      front]
-     [:> FlippingCardBack
-      back]]))
+(defn flippable [props front back]
+  [:> FlippingCard (merge {:style {:margin 0}} props)
+   [:> FlippingCardFront
+    front]
+   [:> FlippingCardBack
+    back]])

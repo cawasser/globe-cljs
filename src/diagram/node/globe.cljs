@@ -8,8 +8,8 @@
             [globe-cljs.events :as events]
 
             ["react-flow-renderer" :refer (Handle)]
-            ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
 
+            [diagram.card.flippable :as f]
             [diagram.card.globe :as globe]
             [diagram.card.video :as video]
             [diagram.node.utils :as u]))
@@ -31,17 +31,16 @@
 
     (reagent/as-element
       [:div#globe-card {:style u/node-style-globe}
-       [:> FlippingCard {:style (merge u/node-style-globe {:margin 0})}
-        [:> FlippingCardFront {:style u/node-style-globe}
-         [globe/card {} {:id                 globe-id
-                         :starting-date-time ls/starting-date-time
-                         :time-t             time-t
-                         :projection         projection
-                         :base-layers        base-layers
-                         :sensor-layers      sensor-layers}]]
-        [:> FlippingCardBack {:style u/node-style-globe}
-         [video/card {:style u/node-style-globe}
-          "https://www.youtube.com/watch?v=z33-qOXOWS4"]]]
+       [f/flippable {:style (merge u/node-style-globe {:margin 0})}
+        [globe/card {:style u/node-style-globe}
+         {:id                 globe-id
+          :starting-date-time ls/starting-date-time
+          :time-t             time-t
+          :projection         projection
+          :base-layers        base-layers
+          :sensor-layers      sensor-layers}]
+        [video/card {:style u/node-style-globe}
+         "https://www.youtube.com/watch?v=z33-qOXOWS4"]]
           ;"https://www.youtube.com/watch?v=hcYeZMNAbNs"]]]
           ;"https://www.youtube.com/watch?v=vLgsf8Pei6Q"]]]
 
