@@ -16,7 +16,12 @@
 
 (def node-style-square {:width "250px" :height "350px"
                         :background default-background
-                        :color default-color})
+                        :color default-color
+
+                        :display :flex
+                        :flex-direction :column
+                        :justify-content :center
+                        :align-items :center})
 
 
 (def node-style-globe {:width "350px" :height "350px"
@@ -29,4 +34,8 @@
                   :margin-right :auto})
 
 
-(def label-style {:style {:text-align :center}})
+(def label-style {:margin-top "50px" :margin-bottom "5px"
+                  :text-align :center})
+
+
+(def handle-style {:width "15px" :height "15px" :borderRadius "50%"})
