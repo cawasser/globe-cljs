@@ -6,6 +6,8 @@
             ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
 
             [chart.line-chart :as c]
+            [diagram.card.entity :as entity]
+            [diagram.card.chart :as chart]
 
             [diagram.node.utils :as u]))
 
@@ -19,13 +21,9 @@
       [:div#platform-card {:style (merge u/node-style-card {:margin 0})}
        [:> FlippingCard {:style {:margin 0}}
         [:> FlippingCardFront
-         [:div {:style u/node-style-square}
-          [:img {:style (merge u/image-style {:background-color u/default-background})
-                 :src   "/images/icons/downlink-terminal.png"}]
-          [:div.subtitle.is-3 {:style u/label-style} label]]]
+         [entity/card {} "/images/icons/downlink-terminal.png" label]]
         [:> FlippingCardBack
-         [:div {:style u/node-style-square}
-          [c/line-chart]]]]
+         [chart/card {} [c/line-chart]]]]
 
        [:> Handle {:id    (str id "-out") :type "source" :position "right"
                    :style u/handle-style}]

@@ -26,7 +26,6 @@
 
 
 (defn pie-chart []
-  (reagent/as-element
-    [:div#line-chart-component {:style {:width 250 :height 300}}
-     [oz.core/vega-lite (data)]]))
+  [:div#line-chart-component {:style {:width 250 :height 300}}
+   [oz.core/vega-lite (data)]])
 

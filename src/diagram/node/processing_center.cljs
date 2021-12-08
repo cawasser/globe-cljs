@@ -5,8 +5,9 @@
             ["react-flow-renderer" :refer (Handle)]
             ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
 
-
             [chart.bar-chart :as c]
+            [diagram.card.entity :as entity]
+            [diagram.card.chart :as chart]
 
             [diagram.node.utils :as u]))
 
@@ -20,13 +21,9 @@
       [:div#platform-card {:style u/node-style-card}
        [:> FlippingCard {:style {:margin 0}}
         [:> FlippingCardFront
-         [:div {:style u/node-style-square}
-          [:img {:style (merge u/image-style {:background-color u/default-background})
-                 :src   "/images/icons/processing-center.png"}]
-          [:div.subtitle.is-3 {:style u/label-style} label]]]
+         [entity/card {} "/images/icons/processing-center.png" label]]
         [:> FlippingCardBack
-         [:div {:style u/node-style-square}
-          [c/bar-chart]]]]
+         [chart/card {} [c/bar-chart]]]]
 
        [:> Handle {:id    (str id "-in") :type "target" :position "left"
                    :style u/handle-style}]])))

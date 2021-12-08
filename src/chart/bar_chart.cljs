@@ -39,8 +39,7 @@
 
 
 (defn bar-chart []
-  (reagent/as-element
-    [:div#line-chart-component
-     [oz.core/vega-lite (data)]]))
+  [:div#line-chart-component
+   [oz.core/vega-lite (data)]])
 
 

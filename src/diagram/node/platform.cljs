@@ -6,7 +6,9 @@
             ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
 
             [diagram.node.utils :as u]
-            [chart.pie-chart :as c]))
+            [chart.pie-chart :as c]
+            [diagram.card.entity :as entity]
+            [diagram.card.chart :as chart]))
 
 
 (defn platform [data]
@@ -18,13 +20,9 @@
       [:div#platform-card {:style u/node-style-card}
        [:> FlippingCard {:style {:margin 0}}
         [:> FlippingCardFront
-         [:div {:style u/node-style-square}
-          [:img {:style (merge u/image-style {:background-color u/default-background})
-                 :src   "/images/icons/Weather-Satellite-PNG-Clipart.png"}]
-          [:div.subtitle.is-3 {:style u/label-style} label]]]
+         [entity/card {} "/images/icons/Weather-Satellite-PNG-Clipart.png" label]]
         [:> FlippingCardBack
-         [:div {:style u/node-style-square}
-          [c/pie-chart]]]]
+         [chart/card {} [c/pie-chart]]]]
 
        [:> Handle {:id    (str id "-out") :type "source" :position "right"
                    :style u/handle-style}]

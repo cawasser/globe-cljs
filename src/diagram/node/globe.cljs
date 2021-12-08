@@ -3,15 +3,14 @@
             [reagent.core :as reagent]
             [re-frame.core :as re-frame]
 
-            [globe.globe :as globe]
             [globe-cljs.cell.layer-support :as ls]
-            [cljs-time.core :as cljs-time]
-            [cljs-time.coerce :as coerce]
-
             [globe-cljs.subs :as subs]
             [globe-cljs.events :as events]
 
             ["react-flow-renderer" :refer (Handle)]
+            ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
+
+            [diagram.card.globe :as globe]
             [diagram.node.utils :as u]))
 
 
@@ -21,7 +20,7 @@
         globe-id      (str "globe-" sensor)
         sensors       (re-frame/subscribe [::subs/sensor-types])
         colors        (ls/get-sensor-colors @sensors)
-        base-layer    (re-frame/subscribe [::subs/base-layers globe-id])
+        base-layers   (re-frame/subscribe [::subs/base-layers globe-id])
         projection    (re-frame/subscribe [::subs/projection globe-id])
         sensor-layers (re-frame/subscribe [::subs/sensor-layers globe-id colors])
         time-t        (re-frame/subscribe [::subs/time globe-id])]
@@ -30,17 +29,23 @@
     (re-frame/dispatch-sync [::events/toggle-sensor globe-id sensor])
 
     (reagent/as-element
-      [:div {:style u/node-style-globe}
+      [:div#globe-card {:style u/node-style-globe}
+       [:> FlippingCard {:style (merge u/node-style-globe {:margin 0})}
+        [:> FlippingCardFront {:style u/node-style-globe}
+         [globe/card {} {:id                 globe-id
+                         :starting-date-time ls/starting-date-time
+                         :time-t             time-t
+                         :projection         projection
+                         :base-layers        base-layers
+                         :sensor-layers      sensor-layers}]]
+        [:> FlippingCardBack {:style u/node-style-globe}
+         [:div {:style (merge u/node-style-globe
+                         {:background      u/default-background
+                          :display         :flex
+                          :flex-direction  :column
+                          :justify-content :center
+                          :align-items     :center})}
+          "The Back"]]]
 
        [:> Handle {:id    (str globe-id "-out") :type "source" :position "right"
-                   :style {:borderRadius "true 0 true true"}}]
-
-       [globe/globe {:id         globe-id
-                     :min-max    :min
-                     :time       (coerce/to-date
-                                   (cljs-time/plus ls/starting-date-time
-                                     (cljs-time/hours (or @time-t 0))))
-                     :projection (or @projection "3D")
-                     :style      {:width            "100%"
-                                  :height           "100%"}}
-        (merge @base-layer @sensor-layers)]])))             ;[:p sensor]])))
+                   :style {:borderRadius "true 0 true true"}}]])))
