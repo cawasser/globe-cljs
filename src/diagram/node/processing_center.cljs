@@ -14,7 +14,7 @@
     (reagent/as-element
       [:div {:style u/node-style-square}
        [:img {:style u/image-style
-              :src "/images/icons/processing-center.jpg"}]
+              :src "/images/icons/processing-center.png"}]
        [:div u/label-style label]
        [:> Handle {:id (str id "-in") :type "target" :position "left"
                    :style {:borderRadius "true 0 true true"}}]])))
