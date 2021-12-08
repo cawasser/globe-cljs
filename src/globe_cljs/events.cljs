@@ -10,7 +10,7 @@
 (re-frame/reg-event-db
  ::initialize-db
  (fn-traced [_ _]
-   ;(log/info ":initialize-db")
+   (log/info ":initialize-db")
    db/default-db))
 
 
@@ -98,6 +98,7 @@
   ::add-element
 
   (fn-traced [db [_ new-element]]
+    (log/info "::add-element" new-element)
     (update db :diagram-elements conj new-element)))
 
 

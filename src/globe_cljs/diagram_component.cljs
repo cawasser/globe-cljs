@@ -10,7 +10,8 @@
     [diagram.node.globe :as globe]
     [diagram.node.platform :as platform]
     [diagram.node.downlink-terminal :as downlink-terminal]
-    [diagram.node.processing-center :as processing-center]))
+    [diagram.node.processing-center :as processing-center]
+    [diagram.node.flipping-node :as f-n]))
 
 
 (defn diagram []
@@ -20,10 +21,11 @@
                            :padding      "20px" :border-width "3px"
                            :border-style :solid :border-color :black}}
      [flow/diagram elements
-      {"globe" globe/globe-node
-       "platform" platform/platform
+      {"globe"             globe/globe-node
+       "platform"          platform/platform
        "downlink-terminal" downlink-terminal/downlink-terminal
-       "processing-center" processing-center/processing-center}
+       "processing-center" processing-center/processing-center
+       "flipping-node"     f-n/flipping-node}
       {}]]))
 
 
@@ -48,18 +50,18 @@
                                                :position {:x 300 :y 125}}])
 
 
-  (re-frame/dispatch [::events/update-element {:id       "5100"
-                                               :type     "globe"
+  (re-frame/dispatch [::events/update-element {:id        "5100"
+                                               :type      "globe"
                                                :draggable false
-                                               :el-type  :node
-                                               :data     {:sensor "viirs-5"}
-                                               :position {:x 450 :y 125}}])
-  (re-frame/dispatch [::events/update-element {:id       "5200"
-                                               :type     "globe"
+                                               :el-type   :node
+                                               :data      {:sensor "viirs-5"}
+                                               :position  {:x 450 :y 125}}])
+  (re-frame/dispatch [::events/update-element {:id        "5200"
+                                               :type      "globe"
                                                :draggable false
-                                               :el-type  :node
-                                               :data     {:sensor "avhhr-6"}
-                                               :position {:x 450 :y 350}}])
+                                               :el-type   :node
+                                               :data      {:sensor "avhhr-6"}
+                                               :position  {:x 450 :y 350}}])
   (re-frame/dispatch [::events/update-element {:id        "5300"
                                                :type      "globe"
                                                :draggable false
@@ -81,3 +83,26 @@
   (re-frame/dispatch [::events/remove-element "5400"])
 
   ())
+
+
+; FlippingCard from react-ui-cards
+(comment
+  (re-frame/dispatch [::events/update-element {:id       "flipping-node"
+                                               :el-type  :node
+                                               ;:draggable false
+                                               :type     "flipping-node"
+                                               :data     {:label "My label has changed!!!"}
+                                               :position {:x 100 :y 525}}])
+
+  (keys @re-frame.db/app-db)
+  (keys (:widgets @re-frame.db/app-db))
+  (keys (:aois @re-frame.db/app-db))
+  (count (:diagram-elements @re-frame.db/app-db))
+
+  (->> (:diagram-elements @re-frame.db/app-db)
+    (map :id))
+
+
+  ())
+
+
