@@ -5,7 +5,8 @@
             ["react-flow-renderer" :refer (Handle)]
             ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
 
-            [diagram.node.utils :as u]))
+            [diagram.node.utils :as u]
+            [chart.pie-chart :as c]))
 
 
 (defn platform [data]
@@ -23,7 +24,7 @@
           [:div u/label-style label]]]
         [:> FlippingCardBack
          [:div {:style u/node-style-square}
-          [:div u/label-style "The Back"]]]]
+          [c/pie-chart]]]]
 
        [:> Handle {:id    (str id "-out") :type "source" :position "right"
                    :style {:borderRadius "true 0 true true"}}]

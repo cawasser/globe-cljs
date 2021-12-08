@@ -104,7 +104,7 @@
     (re-frame/dispatch-sync [::events/init-widget globe-id])
 
     (fn []
-      [:div {:style {:padding "20px" :border-width "3px"}}
+      [:div#globe-component {:style {:padding "20px" :border-width "3px"}}
        [:div
         [:h1 globe-id]
 

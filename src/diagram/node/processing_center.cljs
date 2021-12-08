@@ -5,6 +5,9 @@
             ["react-flow-renderer" :refer (Handle)]
             ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
 
+
+            [chart.bar-chart :as c]
+
             [diagram.node.utils :as u]))
 
 
@@ -23,7 +26,7 @@
           [:div u/label-style label]]]
         [:> FlippingCardBack
          [:div {:style u/node-style-square}
-          [:div u/label-style "The Back"]]]]
+          [c/bar-chart]]]]
 
        [:> Handle {:id    (str id "-in") :type "target" :position "left"
                    :style {:borderRadius "true 0 true true"}}]])))

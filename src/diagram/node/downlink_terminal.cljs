@@ -5,6 +5,8 @@
             ["react-flow-renderer" :refer (Handle)]
             ["react-ui-cards" :refer (FlippingCard FlippingCardBack FlippingCardFront)]
 
+            [chart.line-chart :as c]
+
             [diagram.node.utils :as u]))
 
 
@@ -12,6 +14,7 @@
   (let [d (js->clj data)
         label (get-in d ["data" "label"])
         id (get d "id")]
+
     (reagent/as-element
       [:div#platform-card {:style u/node-style-card}
        [:> FlippingCard
@@ -22,7 +25,7 @@
           [:div u/label-style label]]]
         [:> FlippingCardBack
          [:div {:style u/node-style-square}
-          [:div u/label-style "The Back"]]]]
+          [c/line-chart]]]]
 
        [:> Handle {:id    (str id "-out") :type "source" :position "right"
                    :style {:borderRadius "true 0 true true"}}]
