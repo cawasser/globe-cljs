@@ -56,11 +56,13 @@
      [animated-or-not-popover is-active source target]
 
      [:> ReactFlowProvider
-      [:> ReactFlow {:className id
-                     :elements  @elements
-                     :nodeTypes (clj->js node-types)
-                     :edgeTypes (clj->js edge-types)
-                     :onConnect (partial onConnect is-active source target)}
+      [:> ReactFlow {:className        id
+                     :elements         @elements
+                     :nodeTypes        (clj->js node-types)
+                     :edgeTypes        (clj->js edge-types)
+                     :zoomOnScroll     false
+                     :preventScrolling false
+                     :onConnect        (partial onConnect is-active source target)}
        [:> MiniMap]
        [:> Controls]]]]))
 

@@ -18,8 +18,8 @@
 
 (defn- time-slider [id current-time-t]
   [:div {:style {:display     :flex
-                 :align-items :center
-                 :width       "50%"}}
+                 :align-items :center}}
+                 ;:width       "50%"}}
 
    [:div.slidecontainer
     [:input#myRange.slider
@@ -29,7 +29,7 @@
                     ;(log/info "time-slider" (js/parseInt (-> % .-target .-value)))
                     (re-frame/dispatch-sync [::events/update-time id (js/parseInt (-> % .-target .-value))]))}]]
 
-   [:h3 (str (coerce/to-date
+   [:h2 (str (coerce/to-date
                (cljs-time/plus ls/starting-date-time
                  (cljs-time/hours (or @current-time-t 0)))))]])
 
