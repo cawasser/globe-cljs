@@ -46,8 +46,8 @@
 
    [g/globe "globe-1"]
 
-   ;[weather-flow {:is "weather"
-   ;               :style {:width "70%" :height "700px"}}]
+   [weather-flow {:is "weather"
+                  :style {:width "70%" :height "700px"}}]
 
    [system-flow {:id "system"
                  :style {:width "70%" :height "900px"

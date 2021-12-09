@@ -2,7 +2,7 @@
   (:require [taoensso.timbre :as log]
             [reagent.core :as reagent]
             [re-frame.core :as re-frame]
-            ["react-flow-renderer" :refer (MiniMap Controls) :default ReactFlow]
+            ["react-flow-renderer" :refer (ReactFlowProvider MiniMap Controls) :default ReactFlow]
 
             [globe-cljs.events :as events]
             [diagram.node.globe :as globe]))
@@ -55,13 +55,14 @@
     [:div {:style {:width "100%" :height "100%"}}
      [animated-or-not-popover is-active source target]
 
-     [:> ReactFlow {:className id
-                    :elements  @elements
-                    :nodeTypes (clj->js node-types)
-                    :edgeTypes (clj->js edge-types)
-                    :onConnect (partial onConnect is-active source target)}
-      [:> MiniMap]
-      [:> Controls]]]))
+     [:> ReactFlowProvider
+      [:> ReactFlow {:className id
+                     :elements  @elements
+                     :nodeTypes (clj->js node-types)
+                     :edgeTypes (clj->js edge-types)
+                     :onConnect (partial onConnect is-active source target)}
+       [:> MiniMap]
+       [:> Controls]]]]))
 
 
 
