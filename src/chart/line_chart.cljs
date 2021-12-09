@@ -40,10 +40,10 @@
                                :columns 2}}}})
 
 
-(defn line-chart []
+(defn line-chart [props]
   [:div#line-chart-component {:style {:width 250 :height 300
                                       :background u/default-background}}
-   [oz.core/vega-lite (data)]])
+   [oz.core/vega-lite (merge (data) props)]])
 
 
 

@@ -25,7 +25,13 @@
                                :columns 2}}}})
 
 
-(defn pie-chart []
+(defn pie-chart [props]
   [:div#line-chart-component {:style {:width 250 :height 300}}
-   [oz.core/vega-lite (data)]])
+   [oz.core/vega-lite (merge (data) props)]])
 
+
+
+(comment
+  (merge (data) {:background :orange})
+
+  ())

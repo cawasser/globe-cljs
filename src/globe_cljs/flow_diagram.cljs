@@ -1,4 +1,4 @@
-(ns globe-cljs.diagram-component
+(ns globe-cljs.flow-diagram
   (:require
     [reagent.core :as reagent]
     [re-frame.core :as re-frame]
@@ -6,25 +6,18 @@
     [globe-cljs.subs :as subs]
     [taoensso.timbre :as log]
 
-    [diagram.flow :as flow]
-    [diagram.node.globe :as globe]
-    [diagram.node.platform :as platform]
-    [diagram.node.downlink-terminal :as downlink-terminal]
-    [diagram.node.processing-center :as processing-center]))
+    [diagram.flow :as flow]))
 
 
-(defn diagram []
-  (reagent/with-let [elements (re-frame/subscribe [::subs/diagram-elements])]
+(defn diagram [{:keys [id] :as props} elements node-types edge-types]
+  (log/info "diagram" id props elements node-types edge-types)
 
-    [:div#diagram-component {:style {:width        "70%" :height "750px"
-                                     :padding      "20px" :border-width "3px"
-                                     :border-style :solid :border-color :black}}
-     [flow/diagram elements
-      {"globe"             globe/globe-node
-       "platform"          platform/platform
-       "downlink-terminal" downlink-terminal/downlink-terminal
-       "processing-center" processing-center/processing-center}
-      {}]]))
+  [:div.diagram-component (merge {:style {:padding      "10px" :border-width "3px"
+                                          :border-style :solid :border-color :black}}
+                            props)
+   [flow/diagram id
+    elements
+    node-types edge-types]])
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -95,9 +88,9 @@
   (keys @re-frame.db/app-db)
   (keys (:widgets @re-frame.db/app-db))
   (keys (:aois @re-frame.db/app-db))
-  (count (:diagram-elements @re-frame.db/app-db))
+  (count (:weather-flow-elements @re-frame.db/app-db))
 
-  (->> (:diagram-elements @re-frame.db/app-db)
+  (->> (:weather-flow-elements @re-frame.db/app-db)
     (map :id))
 
 

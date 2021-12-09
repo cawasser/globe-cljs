@@ -12,16 +12,17 @@
             [diagram.node.utils :as u]))
 
 
-(defn processing-center [data]
+(defn node [data]
   (let [d (js->clj data)
         label (get-in d ["data" "label"])
+        image (get-in d ["data" "image"])
         id (get d "id")]
 
     (reagent/as-element
       [:div#platform-card {:style u/node-style-card}
        [f/flippable {:style {:margin 0}}
-        [entity/card {} "/images/icons/processing-center.png" label]
-        [chart/card {} [c/bar-chart]]]
+        [entity/card {} image label]
+        [chart/card {} [c/bar-chart {}]]]
 
        [:> Handle {:id    (str id "-in") :type "target" :position "left"
                    :style u/handle-style}]])))

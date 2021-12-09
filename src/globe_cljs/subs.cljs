@@ -82,10 +82,10 @@
                                  cells)))
                      (filter (fn [[_ t _ _]] (= time-t t))))]
       (do
-        (log/info "::current-aoi-cells" cells)
+        ;(log/info "::current-aoi-cells" cells)
         cells)
       (do
-        (log/info "::current-aoi-cells returning []")
+        ;(log/info "::current-aoi-cells returning []")
         []))))
 
 
@@ -118,9 +118,15 @@
 
 
 (re-frame/reg-sub
-  ::diagram-elements
+  ::weather-flow-elements
   (fn [db _]
-    (or (:diagram-elements db) [])))
+    (or (:weather-flow-elements db) [])))
+
+
+(re-frame/reg-sub
+  ::system-flow-elements
+  (fn [db _]
+    (or (:system-flow-elements db) [])))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

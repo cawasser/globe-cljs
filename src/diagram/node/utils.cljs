@@ -5,35 +5,39 @@
 (def default-color "#FF")
 
 
-(def node-style-round {:width "350px" :height "350px"
-                       :background default-background
+(def event-color :orange)
+(def view-color :lightgreen)
+
+
+(def node-style-round {:width         "350px" :height "350px"
+                       :background    default-background
                        :border-radius "50%"
-                       :color default-color})
+                       :color         default-color})
 
 
 (def node-style-card {:width "250px" :height "350px"})
-                      ;:border "solid thin darkgray"
-                      ;:border-radius "0.25rem"})
+;:border "solid thin darkgray"
+;:border-radius "0.25rem"})
 
 
-(def node-style-square {:width "100%" :height "100%"
-                        :background default-background
-                        :color default-color
-                        :overflow "hidden"
-                        :display :flex
-                        :flex-direction :column
+(def node-style-square {:width           "100%" :height "100%"
+                        :overflow        "hidden"
+                        :background      default-background
+                        :color           default-color
+                        :display         :flex
+                        :flex-direction  :column
                         :justify-content :center
-                        :align-items :center})
+                        :align-items     :center})
 
 
-(def node-style-globe {:width "350px" :height "350px"
+(def node-style-globe {:width         "350px" :height "350px"
                        :border-radius "50%"
-                       :overflow "hidden"})
+                       :overflow      "hidden"})
 
 
-(def image-style {:width "200px" :height "200px"
-                  :display :block
-                  :margin-left :auto
+(def image-style {:width        "200px" :height "200px"
+                  :display      :block
+                  :margin-left  :auto
                   :margin-right :auto})
 
 

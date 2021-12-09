@@ -38,8 +38,8 @@
                                :columns 2}}}})
 
 
-(defn bar-chart []
+(defn bar-chart [props]
   [:div#line-chart-component
-   [oz.core/vega-lite (data)]])
+   [oz.core/vega-lite (merge (data) props)]])
 
 

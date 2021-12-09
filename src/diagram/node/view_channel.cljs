@@ -1,14 +1,15 @@
-(ns diagram.node.platform
+(ns diagram.node.view-channel
   (:require [taoensso.timbre :as log]
             [reagent.core :as reagent]
 
             ["react-flow-renderer" :refer (Handle)]
 
             [diagram.node.utils :as u]
-            [chart.pie-chart :as c]
             [diagram.card.flippable :as f]
             [diagram.card.entity :as entity]
-            [diagram.card.chart :as chart]))
+            [diagram.card.chart :as chart]
+
+            [chart.pie-chart :as pie-chart]))
 
 
 (defn node [data]
@@ -20,10 +21,11 @@
     (reagent/as-element
       [:div#platform-card {:style u/node-style-card}
        [f/flippable {}
-        [entity/card {} image label]
-        [chart/card {} [c/pie-chart {}]]]
+        [entity/card {:background       u/view-color
+                      :background-color u/event-color}
+         image label]
+        [chart/card {:background u/view-color}
+         [pie-chart/pie-chart {:background u/view-color}]]]
 
-       [:> Handle {:id    (str id "-out") :type "source" :position "right"
-                   :style u/handle-style}]
-       [:> Handle {:id    (str id "-in") :type "target" :position "left"
+       [:> Handle {:id    (str id "-out") :type "source" :position "top"
                    :style u/handle-style}]])))

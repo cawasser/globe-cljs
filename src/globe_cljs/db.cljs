@@ -15,8 +15,8 @@
                              (str globe-id " Night")       (night/night (str globe-id " Night"))}
                        (if (= :min min-max)
                          {}
-                         {(str globe-id " Compass")  (star-field/star-field (str globe-id " Compass"))
-                          (str globe-id " Star Field")  (star-field/star-field (str globe-id " Star Field"))}))
+                         {(str globe-id " Compass")    (compass/compass (str globe-id " Compass"))
+                          (str globe-id " Star Field") (star-field/star-field (str globe-id " Star Field"))}))
    :selected-sensors #{}
    :selected-aois    #{}
    :layers           {}
@@ -24,10 +24,11 @@
 
 
 (def default-db
-  {:name               "re-frame"
-   :sensor-allocations sd/all-sensor-data
-   :aois               sd/all-aoi-data
-   :diagram-elements   sd/flow-elements})
+  {:name                  "re-frame"
+   :sensor-allocations    sd/all-sensor-data
+   :aois                  sd/all-aoi-data
+   :weather-flow-elements sd/weather-flow-elements
+   :system-flow-elements  sd/system-flow-elements})
 
 
 

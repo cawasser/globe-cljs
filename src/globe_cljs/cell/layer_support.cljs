@@ -91,7 +91,7 @@
         sector (make-sector pos)
         layer-name (str symbol "-" pos)]
 
-    (log/info "make-image" time-t pos aoi symbol)
+    ;(log/info "make-image" time-t pos aoi symbol)
 
     {layer-name
      (rl/renderable-layer layer-name

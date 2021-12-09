@@ -15,7 +15,7 @@
             [diagram.node.utils :as u]))
 
 
-(defn globe-node [data]
+(defn node [data]
   (let [d             (js->clj data)
         sensor        (get-in d ["data" "sensor"])
         globe-id      (str "globe-" sensor)
