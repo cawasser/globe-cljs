@@ -89,34 +89,36 @@
          [:span aoi]]]))])
 
 
-(defn globe [globe-id]
+(defn globe [{:keys [id style] :as props}]
   (let [sensors          (re-frame/subscribe [::subs/sensor-types])
-        selected-sensors (re-frame/subscribe [::subs/selected-sensors globe-id])
+        selected-sensors (re-frame/subscribe [::subs/selected-sensors id])
         aois             (re-frame/subscribe [::subs/aois])
-        selected-aois    (re-frame/subscribe [::subs/selected-aois globe-id])
+        selected-aois    (re-frame/subscribe [::subs/selected-aois id])
         colors           (ls/get-sensor-colors @sensors)
-        base-layer       (re-frame/subscribe [::subs/base-layers globe-id])
-        sensor-layers    (re-frame/subscribe [::subs/sensor-layers globe-id colors])
-        aoi-layers       (re-frame/subscribe [::subs/aoi-layers globe-id])
-        projection       (re-frame/subscribe [::subs/projection globe-id])
-        time-t           (re-frame/subscribe [::subs/time globe-id])]
+        base-layer       (re-frame/subscribe [::subs/base-layers id])
+        sensor-layers    (re-frame/subscribe [::subs/sensor-layers id colors])
+        aoi-layers       (re-frame/subscribe [::subs/aoi-layers id])
+        projection       (re-frame/subscribe [::subs/projection id])
+        time-t           (re-frame/subscribe [::subs/time id])]
 
-    (re-frame/dispatch-sync [::events/init-widget globe-id])
+    (re-frame/dispatch-sync [::events/init-widget id])
 
     (fn []
-      [:div#globe-component {:style {:padding "20px" :border-width "3px"}}
+      [:div#globe-component {:style (merge {:padding "10px" :border-width "3px"
+                                            :border-style :solid :border-color :black}
+                                      style)}
        [:div
-        [:h1 globe-id]
+        [:h1 id]
 
-        [time-slider globe-id time-t]
+        [time-slider id time-t]
 
         [:div
-         [sensor-visibility-control globe-id sensors selected-sensors colors]
-         [aoi-visibility-control globe-id aois selected-aois]
-         [projection-control globe-id projection]]]
+         [sensor-visibility-control id sensors selected-sensors colors]
+         [aoi-visibility-control id aois selected-aois]
+         [projection-control id projection]]]
 
-       [:div {:style {:width "50%"}}
-        [g/globe {:id         globe-id
+       [:div {:style {:height "70%"}}
+        [g/globe {:id         id
                   :min-max    :max
                   :time       (coerce/to-date
                                 (cljs-time/plus ls/starting-date-time

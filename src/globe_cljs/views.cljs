@@ -44,7 +44,8 @@
   [:div
    [:link {:rel "stylesheet" :href "/css/bulma.css"}]
 
-   [g/globe "globe-1"]
+   [g/globe {:id "globe-1"
+             :style {:width "70%" :height "700px"}}]
 
    [weather-flow {:is "weather"
                   :style {:width "70%" :height "700px"}}]

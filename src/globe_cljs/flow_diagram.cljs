@@ -9,12 +9,12 @@
     [diagram.flow :as flow]))
 
 
-(defn diagram [{:keys [id] :as props} elements node-types edge-types]
+(defn diagram [{:keys [id style] :as props} elements node-types edge-types]
   (log/info "diagram" id props elements node-types edge-types)
 
-  [:div.diagram-component (merge {:style {:padding      "10px" :border-width "3px"
-                                          :border-style :solid :border-color :black}}
-                            props)
+  [:div.diagram-component {:style (merge {:padding      "10px" :border-width "3px"
+                                          :border-style :solid :border-color :black}
+                                    style)}
    [flow/diagram id
     elements
     node-types edge-types]])

@@ -97,7 +97,7 @@
      (rl/renderable-layer layer-name
        [
         ;(poly/polygon locations {:color [128 128 128 0.5]})])}))
-        (circle/circle center {:color [128 128 128 0.5]})
+        (circle/circle center 300000 {:color [128 128 128 0.5]})
         ;(image/image sector symbol)])}))
         (geo-text/geographic-text center (str aoi) (text-attr/text-attributes))])}))
 
