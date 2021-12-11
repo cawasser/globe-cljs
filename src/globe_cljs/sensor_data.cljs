@@ -980,169 +980,186 @@
                     :computed_at "2021-08-02T15:16:05.558813"}))
 
 
-(def all-aoi-data {"alpha-hd" {:sensor-type "hidef-image"
-                               :symbol      [faUmbrella "images/symbols/cloud-rain-solid.png"]
-                               :cells       #{[5 5 "hidef-image" 0]
-                                              [5 4 "hidef-image" 1]
-                                              [5 3 "hidef-image" 2]}}
-                   "beta-img" {:sensor-type "image"
-                               :symbol      [faCloudSunRain "images/symbols/cloud-sun-rain-solid.png"]
-                               :cells       #{[3 5 "hidef-image" 0]
-                                              [3 4 "hidef-image" 1]
-                                              [3 3 "hidef-image" 2]}}})
+(def all-aoi-data {"alpha-hd"  {:sensor-type "hidef-image"
+                                :symbol      [faUmbrella "images/symbols/cloud-rain-solid.png"] ; currently, these DON'T matter
+                                :cells#      {[7 7 "hidef-image" 0]
+                                              [7 6 "hidef-image" 1]
+                                              [7 6 "hidef-image" 2]
+                                              [7 5 "hidef-image" 3]}}
+                   "bravo-img" {:sensor-type "image"
+                                :symbol      [faCloudSunRain "images/symbols/cloud-sun-rain-solid.png"] ; currently, these DON'T matter
+                                :cells       #{[7 2 "image" 0]
+                                               [7 1 "image" 1]}}
+                   "fire-hd"   {:sensor-type "hidef-image"
+                                :symbol      [faCloudSunRain "images/symbols/cloud-sun-rain-solid.png"] ; currently, these DON'T matter
+                                :cells       #{[5 3 "hidef-image" 0]
+                                               [4 3 "hidef-image" 2] [5 3 "hidef-image" 2]
+                                               [4 3 "hidef-image" 3] [5 3 "hidef-image" 3]}}
+                   "fire-ir"   {:sensor-type "v/ir"
+                                :symbol      [faCloudSunRain "images/symbols/cloud-sun-rain-solid.png"] ; currently, these DON'T matter
+                                :cells       #{[5 4 "v/ir" 0]
+                                               [5 3 "v/ir" 1] [5 4 "v/ir" 1]
+                                               [5 4 "v/ir" 2]
+                                               [5 4 "v/ir" 3]}}
+                   "severe-hd" {:sensor-type "hidef-image"
+                                :symbol      [faCloudSunRain "images/symbols/cloud-sun-rain-solid.png"] ; currently, these DON'T matter
+                                :cells       #{[5 6 "hidef-image" 0]
+                                               [5 7 "hidef-image" 1] [6 5 "hidef-image" 1]
+                                               [6 6 "hidef-image" 2]
+                                               [5 7 "hidef-image" 3]}}})
 
 
 (defn diagram-cell [x y]
   {:x (+ 10 (* x 400)) :y (+ 10 (* y 400))})
 
 
-(def weather-flow-elements [{:id "viirs-5"
-                             :el-type    :node
-                             :type       "globe"
-                             :data       {:sensor "viirs-5"}
-                             ;:dragHandle "drag-handle"
-                             :draggable  false
-                             :position   (diagram-cell 0 1)}
-
-                            {:id "abi-meso-11"
-                             :el-type    :node
-                             :type       "globe"
-                             :data       {:sensor "abi-meso-11"}
-                             ;:dragHandle "drag-handle"
-                             :draggable  false
-                             :position   (diagram-cell 0 0)}
-
-                            {:id         "goes-east"
-                             :el-type    :node
-                             :type       "platform"
-                             :data       {:label "GOES East"
-                                          :image "/images/icons/Weather-Satellite-PNG-Clipart.png"}
+(def weather-flow-elements [{:id        "viirs-5"
+                             :el-type   :node
+                             :type      "globe"
+                             :data      {:sensor "viirs-5"}
                              ;:dragHandle "drag-handle"
                              :draggable false
-                             :position   (diagram-cell 1 0)}
+                             :position  (diagram-cell 0 1)}
 
-                            {:id       "central"
-                             :el-type  :node
-                             :type     "downlink-terminal"
-                             :data     {:label "Wallops"
-                                        :image "/images/icons/downlink-terminal.png"}
+                            {:id        "abi-meso-11"
+                             :el-type   :node
+                             :type      "globe"
+                             :data      {:sensor "abi-meso-11"}
+                             ;:dragHandle "drag-handle"
                              :draggable false
-                             :position (diagram-cell 2 0)}
+                             :position  (diagram-cell 0 0)}
 
-                            {:id       "washington"
-                             :el-type  :node
-                             :type     "processing-center"
-                             :data     {:label "NSOF Suitland"
-                                        :image "/images/icons/processing-center.png"}
+                            {:id        "goes-east"
+                             :el-type   :node
+                             :type      "platform"
+                             :data      {:label "GOES East"
+                                         :image "/images/icons/Weather-Satellite-PNG-Clipart.png"}
+                             ;:dragHandle "drag-handle"
                              :draggable false
-                             :position (diagram-cell 3 0)}
+                             :position  (diagram-cell 1 0)}
 
-                            {:id       "noaa-xx"
-                             :el-type  :node
-                             :type     "platform"
-                             :data     {:label "NOAA XX"
-                                        :image "/images/icons/Weather-Satellite-PNG-Clipart.png"}
+                            {:id        "central"
+                             :el-type   :node
+                             :type      "downlink-terminal"
+                             :data      {:label "Wallops"
+                                         :image "/images/icons/downlink-terminal.png"}
                              :draggable false
-                             :position (diagram-cell 1 1)}
+                             :position  (diagram-cell 2 0)}
 
-                            {:id       "mountain"
-                             :el-type  :node
-                             :type     "downlink-terminal"
-                             :data     {:label "Svalbaard/McMurdo"
-                                        :image "/images/icons/downlink-terminal.png"}
+                            {:id        "washington"
+                             :el-type   :node
+                             :type      "processing-center"
+                             :data      {:label "NSOF Suitland"
+                                         :image "/images/icons/processing-center.png"}
                              :draggable false
-                             :position (diagram-cell 2 1)}
+                             :position  (diagram-cell 3 0)}
+
+                            {:id        "noaa-xx"
+                             :el-type   :node
+                             :type      "platform"
+                             :data      {:label "NOAA XX"
+                                         :image "/images/icons/Weather-Satellite-PNG-Clipart.png"}
+                             :draggable false
+                             :position  (diagram-cell 1 1)}
+
+                            {:id        "mountain"
+                             :el-type   :node
+                             :type      "downlink-terminal"
+                             :data      {:label "Svalbaard/McMurdo"
+                                         :image "/images/icons/downlink-terminal.png"}
+                             :draggable false
+                             :position  (diagram-cell 2 1)}
 
                             ; edges
-                            {:id "11-n" :el-type :edge :source "abi-meso-11" :target "goes-east"
+                            {:id    "11-n" :el-type :edge :source "abi-meso-11" :target "goes-east"
                              :style {:stroke-width 20 :stroke :gray} :animated true}
-                            {:id "v5-n" :el-type :edge :source "viirs-5" :target "noaa-xx"
+                            {:id    "v5-n" :el-type :edge :source "viirs-5" :target "noaa-xx"
                              :style {:stroke-width 20 :stroke :gray} :animated true}
-                            {:id "e-c" :el-type :edge :source "goes-east" :target "central"
+                            {:id    "e-c" :el-type :edge :source "goes-east" :target "central"
                              :style {:stroke-width 50 :stroke :orange} :animated true}
-                            {:id "c-w" :el-type :edge :source "central" :target "washington"
+                            {:id    "c-w" :el-type :edge :source "central" :target "washington"
                              :style {:stroke-width 25 :stroke "#f00"} :animated true}
-                            {:id "n-m" :el-type :edge :source "noaa-xx" :target "mountain"
+                            {:id    "n-m" :el-type :edge :source "noaa-xx" :target "mountain"
                              :style {:stroke-width 30 :stroke :lightgreen} :animated true}
-                            {:id "m-w" :el-type :edge :source "mountain" :target "washington"
+                            {:id    "m-w" :el-type :edge :source "mountain" :target "washington"
                              :style {:stroke-width 5} :animated true}])
 
 
-(def system-flow-elements [{:id "vanilla"
-                            :el-type    :node
-                            :type       "server"
-                            :data       {:label "Vanilla"
-                                         :image "/images/icons/Cloud-Server.png"}
+(def system-flow-elements [{:id        "vanilla"
+                            :el-type   :node
+                            :type      "server"
+                            :data      {:label "Vanilla"
+                                        :image "/images/icons/Cloud-Server.png"}
                             ;:dragHandle "drag-handle"
-                            :draggable  false
-                            :position   (diagram-cell 0 0)}
+                            :draggable false
+                            :position  (diagram-cell 0 0)}
 
-                           {:id "sensor-allocations"
-                            :el-type    :node
-                            :type       "service"
-                            :data       {:label "Sensor Allocations"
-                                         :image "/images/icons/gears.png"}
+                           {:id        "sensor-allocations"
+                            :el-type   :node
+                            :type      "service"
+                            :data      {:label "Sensor Allocations"
+                                        :image "/images/icons/gears.png"}
                             ;:dragHandle "drag-handle"
-                            :draggable  false
-                            :position   (diagram-cell 1 1)}
+                            :draggable false
+                            :position  (diagram-cell 1 1)}
 
-                           {:id "aois-events"
-                            :el-type    :node
-                            :type       "event-channel"
-                            :data       {:label "AoIs Events"
-                                         :image "/images/icons/kafka.png"}
+                           {:id        "aois-events"
+                            :el-type   :node
+                            :type      "event-channel"
+                            :data      {:label "AoIs Events"
+                                        :image "/images/icons/kafka.png"}
                             ;:dragHandle "drag-handle"
-                            :draggable  false
-                            :position   (diagram-cell 0 3)}
+                            :draggable false
+                            :position  (diagram-cell 0 3)}
 
-                           {:id "sensor-allocations-view"
-                            :el-type    :node
-                            :type       "view-channel"
-                            :data       {:label "Sensor Allocs View"
-                                         :image "/images/icons/kafka.png"}
+                           {:id        "sensor-allocations-view"
+                            :el-type   :node
+                            :type      "view-channel"
+                            :data      {:label "Sensor Allocs View"
+                                        :image "/images/icons/kafka.png"}
                             ;:dragHandle "drag-handle"
-                            :draggable  false
-                            :position   (diagram-cell 1 2.5)}
+                            :draggable false
+                            :position  (diagram-cell 1 2.5)}
 
-                           {:id "request-events"
-                            :el-type    :node
-                            :type       "event-channel"
-                            :data       {:label "Comms Request Events"
-                                         :image "/images/icons/kafka.png"}
+                           {:id        "request-events"
+                            :el-type   :node
+                            :type      "event-channel"
+                            :data      {:label "Comms Request Events"
+                                        :image "/images/icons/kafka.png"}
                             ;:dragHandle "drag-handle"
-                            :draggable  false
-                            :position   (diagram-cell 2 3)}
+                            :draggable false
+                            :position  (diagram-cell 2 3)}
 
-                           {:id "comms-allocations"
-                            :el-type    :node
-                            :type       "service"
-                            :data       {:label "Comms Allocations"
-                                         :image "/images/icons/gears.png"}
+                           {:id        "comms-allocations"
+                            :el-type   :node
+                            :type      "service"
+                            :data      {:label "Comms Allocations"
+                                        :image "/images/icons/gears.png"}
                             ;:dragHandle "drag-handle"
-                            :draggable  false
-                            :position   (diagram-cell 2 1)}
+                            :draggable false
+                            :position  (diagram-cell 2 1)}
 
-                           {:id "comms-allocations-view"
-                            :el-type    :node
-                            :type       "view-channel"
-                            :data       {:label "Comms Allocs View"
-                                         :image "/images/icons/kafka.png"}
+                           {:id        "comms-allocations-view"
+                            :el-type   :node
+                            :type      "view-channel"
+                            :data      {:label "Comms Allocs View"
+                                        :image "/images/icons/kafka.png"}
                             ;:dragHandle "drag-handle"
-                            :draggable  false
-                            :position   (diagram-cell 3 2.5)}
+                            :draggable false
+                            :position  (diagram-cell 3 2.5)}
 
-                           {:id "v-a" :el-type :edge :source "vanilla" :target "aois-events"
+                           {:id    "v-a" :el-type :edge :source "vanilla" :target "aois-events"
                             :style {:stroke-width 20 :stroke :gray} :animated true}
-                           {:id "a-s" :el-type :edge :source "aois-events" :target "sensor-allocations"
+                           {:id    "a-s" :el-type :edge :source "aois-events" :target "sensor-allocations"
                             :style {:stroke-width 20 :stroke :gray} :animated true}
-                           {:id "s-sv" :el-type :edge :source "sensor-allocations" :target "sensor-allocations-view"
+                           {:id    "s-sv" :el-type :edge :source "sensor-allocations" :target "sensor-allocations-view"
                             :style {:stroke-width 20 :stroke :gray} :animated true}
 
-                           {:id "v-r" :el-type :edge :source "vanilla" :target "request-events"
+                           {:id    "v-r" :el-type :edge :source "vanilla" :target "request-events"
                             :style {:stroke-width 20 :stroke :gray} :animated true}
-                           {:id "r-c" :el-type :edge :source "request-events" :target "comms-allocations"
+                           {:id    "r-c" :el-type :edge :source "request-events" :target "comms-allocations"
                             :style {:stroke-width 20 :stroke :gray} :animated true}
-                           {:id "c-rv" :el-type :edge :source "comms-allocations" :target "comms-allocations-view"
+                           {:id    "c-rv" :el-type :edge :source "comms-allocations" :target "comms-allocations-view"
                             :style {:stroke-width 20 :stroke :gray} :animated true}])
 
 
