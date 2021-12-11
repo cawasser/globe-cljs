@@ -13,25 +13,27 @@
     [globe.globe :as g]
     [globe-cljs.cell.layer-support :as ls]
 
-    ["@fortawesome/react-fontawesome" :refer (FontAwesomeIcon)]))
+    ["@fortawesome/react-fontawesome" :refer (FontAwesomeIcon)]
+    ["react-split-pane" :default SplitPane]))
 
 
 (defn- time-slider [id current-time-t]
   [:div {:style {:display     :flex
                  :align-items :center}}
-                 ;:width       "50%"}}
+   ;:width       "50%"}}
 
-   [:div.slidecontainer
+   [:div.slidecontainer {:style {:width "50%" :margin-right "20px"}}
     [:input#myRange.slider
-     {:style     {:width 400 :margin-right "40px"}
+     {:style     {:width "100%"}
       :type      "range" :min "0" :max "9" :value @current-time-t
       :on-change #(do
                     ;(log/info "time-slider" (js/parseInt (-> % .-target .-value)))
                     (re-frame/dispatch-sync [::events/update-time id (js/parseInt (-> % .-target .-value))]))}]]
 
-   [:h2 (str (coerce/to-date
-               (cljs-time/plus ls/starting-date-time
-                 (cljs-time/hours (or @current-time-t 0)))))]])
+   [:h2 {:style {:width "50%"}}
+    (str (coerce/to-date
+           (cljs-time/plus ls/starting-date-time
+             (cljs-time/hours (or @current-time-t 0)))))]])
 
 
 (defn- projection-control [globe-id projections]
@@ -49,7 +51,8 @@
 
 (defn- sensor-visibility-control [globe-id sensors selected-sensors colors]
   [:div {:style {:display        :flex
-                 :flex-direction :row}}
+                 :flex-direction :row
+                 :flex-wrap      :wrap}}
    (doall
      (for [s @sensors]
        ^{:key s}
@@ -71,7 +74,8 @@
 (defn- aoi-visibility-control [globe-id aois selected-aois]
 
   [:div {:style {:display        :flex
-                 :flex-direction :row}}
+                 :flex-direction :row
+                 :flex-wrap      :wrap}}
    (doall
      (for [[aoi attribs] @aois]
        ^{:key aoi}
@@ -104,30 +108,35 @@
     (re-frame/dispatch-sync [::events/init-widget id])
 
     (fn []
-      [:div#globe-component {:style (merge {:padding "10px" :border-width "3px"
-                                            :border-style :solid :border-color :black}
+      [:div#globe-component {:style (merge {:padding      "10px" :border-width "3px"
+                                            :border-style :solid :border-color :black
+                                            :overflow     :hidden}
                                       style)}
-       [:div
-        [:h1 id]
+       [:> SplitPane {:split       "vertical" :minSize 250
+                      :defaultSize 500
+                      :style       {:position "relative"}}
+        [:> SplitPane {:split "horizontal" :minSize 150}
+         [:div
+          [:h1 id]
+          [time-slider id time-t]]
 
-        [time-slider id time-t]
+         [:div
+          [sensor-visibility-control id sensors selected-sensors colors]
+          [aoi-visibility-control id aois selected-aois]]]
 
-        [:div
-         [sensor-visibility-control id sensors selected-sensors colors]
-         [aoi-visibility-control id aois selected-aois]
-         [projection-control id projection]]]
 
-       [:div {:style {:height "70%"}}
-        [g/globe {:id         id
-                  :min-max    :max
-                  :time       (coerce/to-date
-                                (cljs-time/plus ls/starting-date-time
-                                  (cljs-time/hours (or @time-t 0))))
-                  :projection (or @projection "3D")
-                  :style      {:background-color :black
-                               :width            "100%"
-                               :height           "100%"}}
-         (merge @base-layer @aoi-layers @sensor-layers)]]])))
+        [:div {:style {:width "100%" :height "100%"}}
+         [projection-control id projection]
+         [g/globe {:id         id
+                   :min-max    :max
+                   :time       (coerce/to-date
+                                 (cljs-time/plus ls/starting-date-time
+                                   (cljs-time/hours (or @time-t 0))))
+                   :projection (or @projection "3D")
+                   :style      {:background-color :black
+                                :width            "100%"
+                                :height           "100%"}}
+          (merge @base-layer @aoi-layers @sensor-layers)]]]])))
 
 
 
@@ -244,5 +253,14 @@
                                             :data     {:label (reagent/as-element [globe "globe-2"])}
                                             :position {:x 300 :y 125}}])
 
+
+  ())
+
+
+(comment
+  (def id "globe-1")
+  (def x 100)
+
+  (re-frame/dispatch-sync [::events/toggle-aoi id "alpha-hd"])
 
   ())

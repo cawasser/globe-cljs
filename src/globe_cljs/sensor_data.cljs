@@ -1002,6 +1002,14 @@
                              :data       {:sensor "viirs-5"}
                              ;:dragHandle "drag-handle"
                              :draggable  false
+                             :position   (diagram-cell 0 1)}
+
+                            {:id "abi-meso-11"
+                             :el-type    :node
+                             :type       "globe"
+                             :data       {:sensor "abi-meso-11"}
+                             ;:dragHandle "drag-handle"
+                             :draggable  false
                              :position   (diagram-cell 0 0)}
 
                             {:id         "goes-east"
@@ -1016,7 +1024,7 @@
                             {:id       "central"
                              :el-type  :node
                              :type     "downlink-terminal"
-                             :data     {:label "Central"
+                             :data     {:label "Wallops"
                                         :image "/images/icons/downlink-terminal.png"}
                              :draggable false
                              :position (diagram-cell 2 0)}
@@ -1024,15 +1032,15 @@
                             {:id       "washington"
                              :el-type  :node
                              :type     "processing-center"
-                             :data     {:label "Washington"
+                             :data     {:label "NSOF Suitland"
                                         :image "/images/icons/processing-center.png"}
                              :draggable false
                              :position (diagram-cell 3 0)}
 
-                            {:id       "goes-west"
+                            {:id       "noaa-xx"
                              :el-type  :node
                              :type     "platform"
-                             :data     {:label "GOES West"
+                             :data     {:label "NOAA XX"
                                         :image "/images/icons/Weather-Satellite-PNG-Clipart.png"}
                              :draggable false
                              :position (diagram-cell 1 1)}
@@ -1040,20 +1048,22 @@
                             {:id       "mountain"
                              :el-type  :node
                              :type     "downlink-terminal"
-                             :data     {:label "Mountain"
+                             :data     {:label "Svalbaard/McMurdo"
                                         :image "/images/icons/downlink-terminal.png"}
                              :draggable false
                              :position (diagram-cell 2 1)}
 
                             ; edges
-                            {:id "v5-e" :el-type :edge :source "viirs-5" :target "goes-east"
+                            {:id "11-n" :el-type :edge :source "abi-meso-11" :target "goes-east"
+                             :style {:stroke-width 20 :stroke :gray} :animated true}
+                            {:id "v5-n" :el-type :edge :source "viirs-5" :target "noaa-xx"
                              :style {:stroke-width 20 :stroke :gray} :animated true}
                             {:id "e-c" :el-type :edge :source "goes-east" :target "central"
                              :style {:stroke-width 50 :stroke :orange} :animated true}
                             {:id "c-w" :el-type :edge :source "central" :target "washington"
                              :style {:stroke-width 25 :stroke "#f00"} :animated true}
-                            {:id "w-m" :el-type :edge :source "goes-west" :target "mountain"
-                             :style {:stroke-width 10} :animated true}
+                            {:id "n-m" :el-type :edge :source "noaa-xx" :target "mountain"
+                             :style {:stroke-width 30 :stroke :lightgreen} :animated true}
                             {:id "m-w" :el-type :edge :source "mountain" :target "washington"
                              :style {:stroke-width 5} :animated true}])
 

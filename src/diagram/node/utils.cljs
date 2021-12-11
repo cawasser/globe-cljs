@@ -1,7 +1,7 @@
 (ns diagram.node.utils)
 
 
-(def default-background "#9CA8B3")
+(def default-background "#FFF8DC") ;"#9CA8B3")
 (def default-color "#FF")
 
 
